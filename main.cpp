@@ -1,58 +1,289 @@
-#include <iostream>  // angled brackets are external directories
+#include <iostream>  // angled brackets are external directories\
 
-// Chapter 4 program 2
-
-// FUNCTIONS DO 1 THING ONLY
-double getTowerHeight()
-{
-	std::cout << "Enter the height of the tower in meters: ";
-	double towerHeight{};
-	std::cin >> towerHeight;
-	return towerHeight;
-}
-
-double calculateHeight(const double height, int seconds) 
-{
-	constexpr double gravity{ 9.8 };
-	const double newHeight{ height - gravity * (seconds * seconds) / 2 };
-	return newHeight;
-}
-
-void printHeight(const double height, int seconds)
-{
-	if (height > 0)
-		std::cout << "At " << seconds << 
-		" seconds, the ball is at height : " << height << " meters\n";
-	else
-		std::cout << "At " << seconds << 
-		" seconds, the ball is on the ground.\n";
-}
-
-void calculateAndPrintHeight(const double towerHeight, int seconds)
-{
-	const double newHeight{ calculateHeight(towerHeight, seconds) };
-	printHeight(newHeight, seconds);
-
-}
 
 int main()
 {
-	const double towerHeight{ getTowerHeight() };
-
-	calculateAndPrintHeight(towerHeight, 0);
-	calculateAndPrintHeight(towerHeight, 1);
-	calculateAndPrintHeight(towerHeight, 2);
-	calculateAndPrintHeight(towerHeight, 3);
-	calculateAndPrintHeight(towerHeight, 4);
-	calculateAndPrintHeight(towerHeight, 5);
-
+	int smaller{};
+	int larger{};
+	std::cout << "Enter an integer: ";
+	std::cin >> smaller;
+	std::cout << "Enter a larger integer: ";
+	std::cin >> larger;
+	{
+		if (larger < smaller)
+		{
+			int temp = { smaller };
+			smaller = larger;
+			larger = temp;
+		}
+	}
+	std::cout << "The smaller value is " << smaller << '\n';
+	std::cout << "The larger value is " << larger << '\n';
 	return 0;
 }
 
 
 
+// USER DEFINE NAMESPACES
+// Place to put user created functions
+// Name it with capital letter to start: Foo
+// std is a standard library. Call namespaces the same way Foo::doSomething()
+// ::doSomething() blank operator accesses global namespace after checking local
+
+// NESTING
+// Keep nesting level to 3 or less in any program - consider breaking it up
+
+// Exercise O.4
+//
+//int getNum()
+//{
+//	std::cout << "Enter a number between 0 and 255: ";
+//	int num{};
+//	std::cin >> num;
+//
+//	return num;
+//}
+//
+//int numChecker(int x, int pow)
+//{
+//	if (x >= pow)
+//	{
+//		std::cout << 1;
+//		return x - pow;
+//	}
+//	else
+//	{
+//		std::cout << 0;
+//		return x;
+//	}
+//}
+//
+//int main()
+//{
+//	int input{ getNum() };
+//	int output{};
+//	output = numChecker(input, 128);
+//	output = numChecker(output, 64);
+//	output = numChecker(output, 32);
+//	output = numChecker(output, 16);
+//	output = numChecker(output, 8);
+//	output = numChecker(output, 4);
+//	output = numChecker(output, 2);
+//	output = numChecker(output, 1);
+//
+//	return 0;
+//}
+
+// Exercise O.3
+// 
+//#include <bitset>
+//#include <cstdint>
+//int main()
+//{
+//    [[maybe_unused]] constexpr std::uint8_t option_viewed{ 0x01 };
+//    [[maybe_unused]] constexpr std::uint8_t option_edited{ 0x02 };
+//    [[maybe_unused]] constexpr std::uint8_t option_favorited{ 0x04 };
+//    [[maybe_unused]] constexpr std::uint8_t option_shared{ 0x08 };
+//    [[maybe_unused]] constexpr std::uint8_t option_deleted{ 0x10 };
+//
+//    std::uint8_t myArticleFlags{ option_favorited };
+//
+//    myArticleFlags |= option_viewed;
+//
+//    if (myArticleFlags & option_deleted)
+//        std::cout << "Deleted\n";
+//    else
+//        std::cout << "Not Deleted\n";
+//
+//    myArticleFlags &= ~option_favorited;
+//
+//    std::cout << std::bitset<8>{ myArticleFlags } << '\n';
+//
+//    return 0;
+//}
+
+// BIT MASKS
+// allow you to modify multiple bits in one statement
+
+// Exercise 0.2.2
+//
+//#include <bitset>
+//
+//std::bitset<4> rotl(std::bitset<4> bits)
+//{
+//	const bool leftbit{ bits.test(3) };
+//
+//	bits <<= 1;
+//
+//	if (leftbit)
+//		bits.set(0);
+//
+//	return bits;
+//}
+//
+//
+//int main()
+//{
+//	std::bitset<4> bits1{0b0001};
+//	std::cout << rotl(bits1) << '\n';
+//	
+//	std::bitset<4> bits2{0b1001};
+//	std::cout << rotl(bits2) << '\n';
+//
+//	return 0;
+//}
+
+// Exercise O.2.3 - no set or test allowed
+// 
+//#include <bitset>
+//
+//std::bitset<4> rotl(std::bitset<4> bits)
+//{
+//	return (bits << 1) | (bits >> 3);
+//}
+//
+//
+//int main()
+//{
+//	std::bitset<4> bits1{0b0001};
+//	std::cout << rotl(bits1) << '\n';
+//	
+//	std::bitset<4> bits2{0b1001};
+//	std::cout << rotl(bits2) << '\n';
+//
+//	return 0;
+//} 
+
+// BIT MANIPULATION
+// .test()	query whether bit is 0 or 1
+// .set()	turns a bit on from 0 to 1 but not 1 to 0
+// .reset() turns a bit off from 1 to 0 but not 0 to 1
+// .flip()  flip from 0 to 1 or 1 to 0
 
 
+// BITWISE OPERATORS
+// LEFT SHIFT <<  0110 << 1 is 1100
+// RIGHT SHIFT >> 0110 >> 2 is 0001
+// NOT ~ flips 0 to 1 or vice versa so 0110 to 1001
+// AND &  0 1 1 1
+//		  1 0 1 0 
+//		 =0 0 1 0
+// 
+// OR |   0 1 1 0
+//		  1 0 1 0 
+//		 =1 1 1 0
+//
+// XOR ^ evaluates true if one and ONLY ONE of its operands is true
+//		  0 1 1 0
+//		  0 0 1 1
+//	 	 =0 1 0 1
+
+
+
+
+
+// OPERATOR '?'  - if else but can be placed inside initializers
+//int main()
+//{ // pretty cool but not useful for complex if else statements
+//	constexpr bool inBigClassroom{ true };
+//	constexpr int classSize{ inBigClassroom ? 30 : 20 };
+//	std::cout << "The class size is: " << classSize << '\n';
+//	return 0;
+//}
+
+// INCREMENT AND DECREMENT - does permanently effect variables
+// Not recommended to use directly in passing function parameters or in expressions
+// ++x - increment by 1
+// --x - decrement by 1
+// x++ - evaluate copy of num first then increment
+// x-- - evaluate copy of num first then decrement
+
+// 5.3 EXERCISE
+//
+//int getNum()
+//{
+//	std::cout << "Enter an integer: ";
+//	int x{};
+//	std::cin >> x;
+//	return x;
+//}
+//
+//bool isEven(int num)
+//{
+//	// HYPER CHAD CODE
+//	return (num % 2) == 0;
+//
+//	// MY LAME CODE
+//	//if (num % 2 == 0)
+//	//	return true;
+//	//else
+//	//	return false;
+//}
+//
+//void print(int num, bool even)
+//{
+//	if (even)
+//		std::cout << num << " is even\n";
+//	else
+//		std::cout << num << " is odd\n";
+//}
+//
+//int main()
+//{
+//	int x{ getNum() };
+//	bool even{ isEven(x) };
+//	print(x, even);
+//	return 0;
+//}
+
+// Chapter 4 program 2
+//
+// FUNCTIONS DO 1 THING ONLY
+//double getTowerHeight()
+//{
+//	std::cout << "Enter the height of the tower in meters: ";
+//	double towerHeight{};
+//	std::cin >> towerHeight;
+//	return towerHeight;
+//}
+//
+//double calculateHeight(const double height, int seconds) 
+//{
+//	constexpr double gravity{ 9.8 };
+//	const double newHeight{ height - gravity * (seconds * seconds) / 2 };
+//	return newHeight;
+//}
+//
+//void printHeight(const double height, int seconds)
+//{
+//	if (height > 0)
+//		std::cout << "At " << seconds << 
+//		" seconds, the ball is at height : " << height << " meters\n";
+//	else
+//		std::cout << "At " << seconds << 
+//		" seconds, the ball is on the ground.\n";
+//}
+//
+//void calculateAndPrintHeight(const double towerHeight, int seconds)
+//{  // DOESNT DO ONE THING?? My solution made more sense?
+//	const double newHeight{ calculateHeight(towerHeight, seconds) };
+//	printHeight(newHeight, seconds);
+//
+//}
+//
+//int main()
+//{
+//	const double towerHeight{ getTowerHeight() };
+//
+//	calculateAndPrintHeight(towerHeight, 0);
+//	calculateAndPrintHeight(towerHeight, 1);
+//	calculateAndPrintHeight(towerHeight, 2);
+//	calculateAndPrintHeight(towerHeight, 3);
+//	calculateAndPrintHeight(towerHeight, 4);
+//	calculateAndPrintHeight(towerHeight, 5);
+//
+//	return 0;
+//}
 
 // Chapter 4 program 1
 //
@@ -224,7 +455,7 @@ int main()
 // CONSTANTS - optimization option
 // const int x {5}; - MUST be initialized (defined)
 // constexpr int { sumOfSomething }; - defined as compile-time constant, else error
-// expressions such as 3 + 4 will generally run at compile-time - optimization
+// expressions such as 3 + 4 will generally run at compile-time - optimization - IF USING CONSTEXPR VARIABLES
 
 // STATIC CAST EXERCISE
 //int main()
