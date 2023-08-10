@@ -143,6 +143,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="add.h" />
+    <ClInclude Include="constants.h" />
     <ClInclude Include="io.h" />
     <ClInclude Include="square.h" />
     <ClInclude Include="wave.h" />

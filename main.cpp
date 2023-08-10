@@ -1,28 +1,120 @@
 #include <iostream>  // angled brackets are external directories\
 
+// EXERCISE 7.6
+
+int calculate(int x, int y, char op)
+{
+	switch (op)
+	{
+		case '+':
+			return x + y;
+		case '-':
+			return x - y;
+		case '*':
+			return x * y;
+		case '/':
+			return x / y;
+		case '%':
+			return x % y;
+		default:
+			std::cout << "ERROR\n";
+			return 0;
+
+	}
+}
 
 int main()
 {
-	int smaller{};
-	int larger{};
-	std::cout << "Enter an integer: ";
-	std::cin >> smaller;
-	std::cout << "Enter a larger integer: ";
-	std::cin >> larger;
-	{
-		if (larger < smaller)
-		{
-			int temp = { smaller };
-			smaller = larger;
-			larger = temp;
-		}
-	}
-	std::cout << "The smaller value is " << smaller << '\n';
-	std::cout << "The larger value is " << larger << '\n';
+	int num1{1};
+	int num2{2};
+	char op{'g'};
+	std::cout << num1 << ' ' << op << ' ' << num2 
+		<< " is " << calculate(num1, num2, op);
 	return 0;
 }
 
 
+
+// CHAPTER 6 QUESTION 3 WRITE FUNCTION
+//
+//int accumulate(int x)
+//{  // this function is the answer - downfall is that it can't be reset
+//	static int stickyNum{ 0 };
+//	return stickyNum += x;;
+//}
+//
+//
+//int main()
+//{
+//	std::cout << accumulate(4) << '\n';	// print 4
+//	std::cout << accumulate(3) << '\n';	// 7
+//	std::cout << accumulate(2) << '\n';	// 9
+//	std::cout << accumulate(1) << '\n'; // 10
+//	return 0;
+//}
+
+// CHAPTER 6 QUESTION 2 CREATE HEADER FOR BELOW
+//
+//#include "constants.h"
+//
+//int main()
+//{
+//	std::cout << "How many students are in your class? ";
+//	int students{};
+//	std::cin >> students;
+//	// check constants.h for answer
+//
+//	if (students > constants::max_class_size)
+//		std::cout << "There are too many students in this class";
+//	else
+//		std::cout << "This class isn't too large";
+//
+//	return 0;
+//}
+
+// CHAPTER 6 QUESTION 1 FIX PROGRAM
+//
+//int main()
+//{
+//	std::cout << "Enter a positive number: ";
+//	int num{};
+//	std::cin >> num;
+//
+//
+//	if (num < 0)
+//	{  // just needed to insert a block here - ez
+//		std::cout << "Negative number entered.  Making positive.\n";
+//		num = -num;
+//	}
+//
+//	std::cout << "You entered: " << num;
+//
+//	return 0;
+//}
+
+// EXERCISE 6.3.1
+//
+//int main()
+//{
+//	std::cout << "Enter an integer: ";
+//	int smaller{};
+//	std::cin >> smaller;
+//
+//	std::cout << "Enter a larger integer: ";
+//	int larger{};
+//	std::cin >> larger;
+//	if (larger < smaller)
+//	{
+//		// std::swap(larger, smaller) // nice one liner instead of below
+//		std::cout << "Swapping the values.\n";
+//		int temp = { smaller };
+//		smaller = larger;
+//		larger = temp;
+//	}
+//	std::cout << "The smaller value is " << smaller << '\n';
+//	std::cout << "The larger value is " << larger << '\n';
+//	return 0;
+//}
 
 // USER DEFINE NAMESPACES
 // Place to put user created functions
