@@ -1,39 +1,335 @@
 #include <iostream>  // angled brackets are external directories\
 
-// EXERCISE 7.6
 
-int calculate(int x, int y, char op)
-{
-	switch (op)
-	{
-		case '+':
-			return x + y;
-		case '-':
-			return x - y;
-		case '*':
-			return x * y;
-		case '/':
-			return x / y;
-		case '%':
-			return x % y;
-		default:
-			std::cout << "ERROR\n";
-			return 0;
+// RANDOM STUFF
+// Use random device and only seed it once per program run
 
-	}
-}
+// EXAMPLE PROGRAM WITH ERROR CHECKING USER INPUT
+//#include <limits>
+//
+//void ignoreLine()
+//{
+//    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+//}
+//
+//double getDouble()
+//{
+//    while (true) // Loop until user enters a valid input
+//    {
+//        std::cout << "Enter a decimal number: ";
+//        double x{};
+//        std::cin >> x;
+//
+//        // Check for failed extraction
+//        if (!std::cin) // if the previous extraction failed
+//        {
+//            if (std::cin.eof()) // if the stream was closed (Unix systems)
+//            {
+//                exit(0); // shut down the program now
+//            }
+//
+//            // let's handle the failure
+//            std::cin.clear(); // put us back in 'normal' operation mode
+//            ignoreLine();     // and remove the bad input
+//
+//            std::cout << "Oops, that input is invalid.  Please try again.\n";
+//        }
+//        else
+//        {
+//            ignoreLine(); // remove any extraneous input
+//            return x;
+//        }
+//    }
+//}
+//
+//char getOperator()
+//{
+//    while (true) // Loop until user enters a valid input
+//    {
+//        std::cout << "Enter one of the following: +, -, *, or /: ";
+//        char operation{};
+//        std::cin >> operation;
+//
+//        if (!std::cin) // if the previous extraction failed
+//        {
+//            if (std::cin.eof()) // if the stream was closed
+//            {
+//                exit(0); // shut down the program now
+//            }
+//
+//            // let's handle the failure
+//            std::cin.clear(); // put us back in 'normal' operation mode
+//        }
+//
+//        ignoreLine(); // remove any extraneous input
+//
+//        // Check whether the user entered meaningful input
+//        switch (operation)
+//        {
+//        case '+':
+//        case '-':
+//        case '*':
+//        case '/':
+//            return operation; // return it to the caller
+//        default: // otherwise tell the user what went wrong
+//            std::cout << "Oops, that input is invalid.  Please try again.\n";
+//        }
+//    } // and try again
+//}
+//
+//void printResult(double x, char operation, double y)
+//{
+//    switch (operation)
+//    {
+//    case '+':
+//        std::cout << x << " + " << y << " is " << x + y << '\n';
+//        break;
+//    case '-':
+//        std::cout << x << " - " << y << " is " << x - y << '\n';
+//        break;
+//    case '*':
+//        std::cout << x << " * " << y << " is " << x * y << '\n';
+//        break;
+//    case '/':
+//        std::cout << x << " / " << y << " is " << x / y << '\n';
+//        break;
+//    default: // Being robust means handling unexpected parameters as well, even though getOperator() guarantees operation is valid in this particular program
+//        std::cout << "Something went wrong: printResult() got an invalid operator.\n";
+//    }
+//}
+//
+//int main()
+//{
+//    double x{ getDouble() };
+//    char operation{ getOperator() };
+//    double y{ getDouble() };
+//
+//    printResult(x, operation, y);
+//
+//    return 0;
+//}
 
-int main()
-{
-	int num1{1};
-	int num2{2};
-	char op{'g'};
-	std::cout << num1 << ' ' << op << ' ' << num2 
-		<< " is " << calculate(num1, num2, op);
-	return 0;
-}
+// CIN.IGNORE
+// std::cin.ignore(100, '\n') // clear up to 100 chars or until linebreak
+// or for no limit.. can put in its own function for readability
+// std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 
+// 7.10.5 FIZZ BUZZ POP
+//
+//void fizzbuzz(int num)
+//{
+//	for (int count{ 1 }; count <= num; ++count)
+//	{
+//		bool word{ false };
+//		if (count % 3 == 0)
+//		{
+//			std::cout << "fizz";
+//			word = true;
+//		}
+//
+//		if (count % 5 == 0)
+//		{
+//			std::cout << "buzz";
+//			word = true;
+//		}
+//
+//		if (count % 7 == 0)
+//		{
+//			std::cout << "pop";
+//			word = true;
+//		}
+//
+//		if (!word)
+//		{
+//			std::cout << count;
+//		}
+//
+//		std::cout << '\n';
+//	}
+//}
+//
+//int main()
+//{
+//	fizzbuzz(150);
+//	return 0;
+//}
 
+// 7.10.4 FIZZ BUZZ
+//
+//void fizzbuzz(int num)
+//{
+//	for (int count{ 1 }; count <= num; ++count)
+//
+//		if (count % 3 == 0 && count % 5 == 0)
+//			std::cout << "fizzbuzz\n";
+//
+//		else if (count % 3 == 0)
+//			std::cout << "fizz\n";
+//
+//		else if (count % 5 == 0)
+//			std::cout << "buzz\n";
+//
+//		else
+//			std::cout << count << '\n';
+//}
+//
+//int main()
+//{
+//	fizzbuzz(15);
+//	return 0;
+//}
+
+// 7.10.2 EXERCISE
+//
+//int sumTo(int value)
+//{
+//	int sum{};
+//	for (int count{ value }; count > 0; --count)
+//		sum += count;
+//	return sum;
+//}
+//
+//int main()
+//{
+//	std::cout << sumTo(5);
+//	return 0;
+//}
+
+// 7.10.1 EXERCISE
+//
+//int main()
+//{
+//	for (int x{}; x <= 20; x += 2)
+//		std::cout << x << '\n';
+//	return 0;
+//}
+
+// FOR EXAMPLE WITH MORE THAN ONE VARIABLE
+//
+//int main()
+//{
+//    for (int x{ 0 }, y{ 9 }; x < 10; ++x, --y)
+//        std::cout << x << ' ' << y << '\n';
+//
+//    return 0;
+//}
+
+// FOR STATEMENTS - EXAMPLE
+//
+//int main()
+//{
+//	for (int count{ 1 }; count <= 10; ++count)
+//		std::cout << count << ' ';
+//
+//	std::cout << "\nDone.";
+//
+//	return 0;
+//}
+
+// DO WHILE STATEMENTS - EXAMPLE - not generally recommended to use
+//
+//int main()
+//{
+//	int selection{};
+//
+//	do
+//	{
+//		std::cout << "Please make a selection: \n";
+//		std::cout << "1) Addition\n";
+//		std::cout << "2) Subtraction\n";
+//		std::cout << "3) Multiplication\n";
+//		std::cout << "4) Division\n";
+//		std::cin >> selection;
+//	} 
+//	while (selection != 1 && selection != 2 && selection != 3 &&
+//		selection != 4);
+//
+//	std::cout << "You selected option #" << selection << '\n';
+//
+//	return 0;
+//
+
+// 7 EXERCISE inner outer ish
+//
+//int main()
+//{
+//	int outer{1};
+//
+//	while (outer <= 5)
+//	{
+//		int inner{ 5 };
+//
+//		while (inner >= 1)
+//		{
+//			if (inner <= outer)
+//				std::cout << inner << ' ';
+//			else
+//				std::cout << "  ";
+//
+//			--inner;
+//		}
+//
+//		std::cout << '\n';
+//
+//		++outer;
+//	}
+//
+//	return 0;
+//}
+
+// 7.8.2 EXERCISE
+//
+//int main()
+//{
+//	char ch{ 'a' };
+//	while (ch <= 'z')
+//	{  // supposed to static_cast I guess
+//		std::cout << ch << " ASCII Code: " << static_cast<int>(ch) << '\n';
+//		++ch;
+//	}
+//	return 0;
+//}
+
+// WHILE STATEMENTS
+// while (count <= 10)  - loop variables should be signed to avoid overflow
+//		{ std::cout << yada yada; }
+// while (true)
+
+// GOTO STATEMENTS - generally best to avoid using unless exiting a nest
+// can jump forward or backward but cannot jump between functions
+
+// EXERCISE 7.6 - switch case
+//
+//int calculate(int x, int y, char op)
+//{
+//	switch (op)
+//	{
+//		case '+':
+//			return x + y;
+//		case '-':
+//			return x - y;
+//		case '*':
+//			return x * y;
+//		case '/':
+//			return x / y;
+//		case '%':
+//			return x % y;
+//		default:
+//			std::cout << "ERROR\n";
+//			return 0;
+//	}
+//}
+//
+//int main()
+//{  // not great, I would have liked catch the error before printing anything
+//   // BUT this is the accepted answer
+//	int num1{1};
+//	int num2{2};
+//	char op{'g'};
+//	std::cout << num1 << ' ' << op << ' ' << num2 
+//		<< " is " << calculate(num1, num2, op) << '\n';
+//	return 0;
+//}
 
 // CHAPTER 6 QUESTION 3 WRITE FUNCTION
 //
