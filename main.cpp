@@ -1,78 +1,182 @@
 #include <iostream>  // angled brackets are external directories
 
-// CHAPTER 7 PROGRAM 2
-//
-#include<cassert>
-#include<cmath>
 
-bool isPrime(int x)
+
+#include "Random.h"
+#include <limits>
+
+void ignoreLine()
 {
-    if (x <= 1)
-        return false;
+	std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+}
 
-    int maxTest{ static_cast<int>(std::sqrt(x)) };
+int getGuess(int count)
+{
+	while (true)
+	{
+		std::cout << "Guess #" << count << ": ";
+		int input{};
+		std::cin >> input;
 
-    for (int test{ maxTest }; test > 1; --test)
-    {
-        if (x % test == 0)
-            return false;
-    }
+		if (!std::cin)
+		{
+			std::cin.clear();
+			ignoreLine();
+			std::cout << "Oops, that input is invalid. Please try again.\n";
+		}
+		else if (input < 1 || input > 100)
+		{
+			ignoreLine();
+			std::cout << "You cannot guess a number below 1 or above 100.\n";
+		}
+		else
+		{
+			ignoreLine();
+			return input;
+		}
+	}
+}
 
-    return true;
+bool playGame(int correctAnswer, int maxGuesses)
+{
+	for (int count {1}; count <= maxGuesses; ++count)
+	{
+		
+		int input{getGuess(count)};
 
+		if (input == correctAnswer)
+			return true;
 
+		else if (input > correctAnswer)
+			std::cout << "Your guess is too high.\n";
 
-    //MY ORIGINAL ANSWER
-    //if (x <= 1)
-    //    return false;
-    //int success{};
-    //for (int count{x}; count > 1; --count)
-    //    if (x % count == 0)
-    //    {
-    //        std::cout << "Yep\n";
-    //        ++success;
-    //    }
-    //if (success > 1)
-    //{
-    //    std::cout << x << " FALSE\n";
-    //    return false;
-    //}
-    //else
-    //{
-    //    std::cout << x << " TRUE\n";
-    //    return true;
-    //}
+		else
+			std::cout << "Your guess is too low.\n";
+	}
+
+	return false;
+}
+
+bool playAgain()
+{
+	while (true)
+	{
+		std::cout << "Would you like to play again (y/n)?";
+		char input{};
+		std::cin >> input;
+
+		if (!std::cin)
+			std::cin.clear();
+
+		ignoreLine();
+
+		switch (input)
+		{
+		case 'y': 
+			ignoreLine();
+			return true;
+		case 'n': 
+			ignoreLine();
+			return false;
+		default:
+			std::cout << "Oops, that input is invalid. Please try again.\n";
+		}
+	}
 }
 
 int main()
 {
-    assert(!isPrime(0));
-    assert(!isPrime(1));
-    assert(isPrime(2));
-    assert(isPrime(3));
-    assert(!isPrime(4));
-    assert(isPrime(5));
-    assert(isPrime(7));
-    assert(!isPrime(9));
-    assert(isPrime(11));
-    assert(isPrime(13));
-    assert(!isPrime(15));
-    assert(!isPrime(16));
-    assert(isPrime(17));
-    assert(isPrime(19));
-    assert(isPrime(97));
-    assert(!isPrime(99));
-    assert(isPrime(13417));
+	constexpr int maxGuesses{7};
 
-    std::cout << "Success!\n";
+	do
+	{
+		int solution{ Random::get(1, 100) };
+
+		std::cout << "Let's play a game. I'm thinking of a number between 1 and"
+			<< " 100. You have 7 tries to guess what it is.\n";
+
+		bool won{ playGame(solution, maxGuesses) };
+		if (won)
+			std::cout << "Correct! You win!\n";
+		else
+			std::cout << "Sorry, you lose. The correct number was "
+			<< solution << ".\n";
+
+	} while (playAgain());
+	
+	std::cout << "Thank you for playing.\n";
 
 	return 0;
 }
 
-
-
-
-
+// CHAPTER 7 PROGRAM 2
+//
+//#include<cassert>
+//#include<cmath>
+//
+//bool isPrime(int x)
+//{
+//    //MY OPTIMIZED ANSWER
+//    if (x <= 1)
+//        return false;
+//
+//    int maxTest{ static_cast<int>(std::sqrt(x)) };
+//
+//    for (int test{ maxTest }; test > 1; --test)
+//    {
+//        if (x % test == 0)
+//            return false;
+//    }
+//
+//    return true;
+//
+//
+//    //MY ORIGINAL ANSWER - actually only need one success if starting below x
+//    //if (x <= 1)
+//    //    return false;
+//    //int success{};
+//    //for (int count{x}; count > 1; --count)
+//    //    if (x % count == 0)
+//    //    {
+//    //        std::cout << "Yep\n";
+//    //        ++success;
+//    //    }
+//    //if (success > 1)
+//    //{
+//    //    std::cout << x << " FALSE\n";
+//    //    return false;
+//    //}
+//    //else
+//    //{
+//    //    std::cout << x << " TRUE\n";
+//    //    return true;
+//    //}
+//}
+//
+//int main()
+//{
+//    assert(!isPrime(0));
+//    assert(!isPrime(1));
+//    assert(isPrime(2));
+//    assert(isPrime(3));
+//    assert(!isPrime(4));
+//    assert(isPrime(5));
+//    assert(isPrime(7));
+//    assert(!isPrime(9));
+//    assert(isPrime(11));
+//    assert(isPrime(13));
+//    assert(!isPrime(15));
+//    assert(!isPrime(16));
+//    assert(isPrime(17));
+//    assert(isPrime(19));
+//    assert(isPrime(97));
+//    assert(!isPrime(99));
+//    assert(isPrime(13417));
+//
+//    std::cout << "Success!\n";
+//
+//	return 0;
+//}
 
 // CHAPTER 7 PROGRAM
 //
