@@ -1,5 +1,123 @@
-#include <iostream>  // angled brackets are external directories\
+#include <iostream>  // angled brackets are external directories
 
+// CHAPTER 7 PROGRAM 2
+//
+#include<cassert>
+#include<cmath>
+
+bool isPrime(int x)
+{
+    if (x <= 1)
+        return false;
+
+    int maxTest{ static_cast<int>(std::sqrt(x)) };
+
+    for (int test{ maxTest }; test > 1; --test)
+    {
+        if (x % test == 0)
+            return false;
+    }
+
+    return true;
+
+
+
+    //MY ORIGINAL ANSWER
+    //if (x <= 1)
+    //    return false;
+    //int success{};
+    //for (int count{x}; count > 1; --count)
+    //    if (x % count == 0)
+    //    {
+    //        std::cout << "Yep\n";
+    //        ++success;
+    //    }
+    //if (success > 1)
+    //{
+    //    std::cout << x << " FALSE\n";
+    //    return false;
+    //}
+    //else
+    //{
+    //    std::cout << x << " TRUE\n";
+    //    return true;
+    //}
+}
+
+int main()
+{
+    assert(!isPrime(0));
+    assert(!isPrime(1));
+    assert(isPrime(2));
+    assert(isPrime(3));
+    assert(!isPrime(4));
+    assert(isPrime(5));
+    assert(isPrime(7));
+    assert(!isPrime(9));
+    assert(isPrime(11));
+    assert(isPrime(13));
+    assert(!isPrime(15));
+    assert(!isPrime(16));
+    assert(isPrime(17));
+    assert(isPrime(19));
+    assert(isPrime(97));
+    assert(!isPrime(99));
+    assert(isPrime(13417));
+
+    std::cout << "Success!\n";
+
+	return 0;
+}
+
+
+
+
+
+
+// CHAPTER 7 PROGRAM
+//
+//#include "constants.h"
+//
+//
+//double calculateHeight(double initialHeight, int seconds)
+//{
+//
+//	double distanceFallen{ myConstants::gravity * seconds * seconds / 2 };
+//	double heightNow{ initialHeight - distanceFallen };
+//
+//	//Check whether we've gone under the ground
+//	//If so, set the height to ground-level
+//	if (heightNow < 0.0)
+//		return 0.0;
+//	else
+//		return heightNow;
+//}
+//
+//bool calculateAndPrintHeight(double initialHeight, int seconds)
+//{
+//	double currentHeight{ calculateHeight(initialHeight, seconds) };
+//
+//	std::cout << "At " << seconds << " seconds, the ball is at height: "
+//		<< currentHeight << '\n';
+//
+//	return (currentHeight == 0.0);
+//}
+//
+//int main()
+//{
+//	std::cout << "Enter the initial height of the tower in meters: ";
+//	double initialHeight{};
+//	std::cin >> initialHeight;
+//
+//	int seconds{};
+//
+//	//returns true if the ground was hit
+//	while (!calculateAndPrintHeight(initialHeight, seconds))
+//		++seconds;
+//
+//	
+//	return 0;
+//}
 
 // RANDOM STUFF
 // Use random device and only seed it once per program run

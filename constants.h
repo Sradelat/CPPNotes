@@ -1,10 +1,19 @@
 #ifndef CONSTANTS_H
 #define CONSTANTS_H
 
-namespace constants
+
+namespace myConstants
 {
-	inline constexpr int max_class_size{ 35 };
+	inline constexpr double gravity{ 9.8 };
 }
+
+
+// FOR CLASS SIZE
+//
+//namespace constants
+//{
+//	inline constexpr int max_class_size{ 35 };
+//}
 
 
 
