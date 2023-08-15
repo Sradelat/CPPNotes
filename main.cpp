@@ -1,8 +1,304 @@
 #include <iostream>  // angled brackets are external directories
 
+// 10.2.2
+//
+namespace Monster
+{
+	enum MonsterType
+	{
+		orc,
+		goblin,
+		troll,
+		ogre,
+		skeleton,
+	};
+}
+
+int main()
+{
+	Monster::MonsterType monster{Monster::troll};
+	if (monster == Monster::troll)
+		return 0;
+}
+
+// 10.2.1
+//
+//enum MonsterType
+//{
+//	orc,
+//	goblin,
+//	troll,
+//	ogre,
+//	skeleton,
+//};
+
+// ENUMERATORS
+// Avoiding global scope:
+//namespace Color
+//{
+//    // The names Color, red, blue, and green are defined inside namespace Color
+//    enum Color
+//    {
+//        red,
+//        green,
+//        blue,
+//    };
+//}
+//
+//namespace Feeling
+//{
+//    enum Feeling
+//    {
+//        happy,
+//        tired,
+//        blue, // Feeling::blue doesn't collide with Color::blue
+//    };
+//}
+//
+//int main()
+//{
+//    Color::Color paint{ Color::blue };
+//    Feeling::Feeling me{ Feeling::blue };
+//
+//    return 0;
+//}
+//
+// Use-case example:
+//enum Color
+//{
+//    red,
+//    green,
+//    blue,
+//};
+//
+//int main()
+//{
+//    Color shirt{ blue };
+//
+//    if (shirt == blue) // if the shirt is blue
+//        std::cout << "Your shirt is blue!";
+//    else
+//        std::cout << "Your shirt is not blue!";
+//
+//    return 0;
+//}
+
+// PROGRAM DEFINED TYPES
+//  Example:
+// Define a program-defined type named Fraction so the compiler understands what a Fraction is
+// (we'll explain what a struct is and how to use them later in this chapter)
+// This only defines what a Fraction type looks like, it doesn't create one
+//struct Fraction
+//{
+//	int numerator{};
+//	int denominator{};
+//};
+//
+//// Now we can make use of our Fraction type
+//int main()
+//{
+//	Fraction f{ 3, 4 }; // this actually instantiates a Fraction object named f
+//
+//	return 0;
+//}
 
 
+// CHAPTER 9 PROGRAM FUNCTION - write sort2 function
+//
+//void sort2(int& x, int& y)
+//{
+//	int swap{ x };
+//	if (x > y)
+//	{
+//		x = y;
+//		y = swap;
+//	}
+//}
+//
+//int main()
+//{
+//	int x{ 7 };
+//	int y{ 5 };
+//
+//	sort2(x, y);
+//	std::cout << x << ' ' << y << '\n'; //should print 5 7
+//
+//	sort2(x, y);
+//	std::cout << x << ' ' << y << '\n'; // should print 5 7
+//	return 0;
+//}
 
+// AUTO AND REFERENCES / CONST
+// instantiating an auto type with a ref or const will have each be dropped
+// it will have to be reapplied in the definition of the variable
+// auto does not drop pointers
+
+// IN AND OUT PARAMS
+// IN params are normal params as we know
+// OUT params are params by reference that change a variable in outer scope
+// Generally avoid OUT params if possible
+
+// RETURN BY ADDRESS AND REFERENCE
+// const std::string& getProgramName() <- example reference function
+// avoids expensive copying objects to return them
+// return by address only necessary when ability to return null pointer is needed
+
+// PASSING POINTERS TO FUNCTIONS AS PARAMS
+// void printByAddress(const std::string* ptr) <-example function
+//		std::cout << *ptr << '\n'; will print the value based on address passed
+// printByAddress(&str) <-example call & passes the address
+// no expensive copy is made this way
+// passing by address or ref allows changing of variable referenced in func
+// prefer passing as ref due to possible null pointers
+
+// CONST POINTERS ex const int* const ptr {x};
+//A const before the asterisk is associated with the type being pointed to. 
+//Therefore, this is a pointer to a const value, and the value cannot be modified through the pointer.
+// 
+//A const after the asterisk is associated with the pointer itself.
+//Therefore, this pointer cannot be assigned a new address.
+
+// POINTERS - used to change the value at an address or change the address of a value
+// printing something like this &x shows address of variable
+// printing this *(&x) prints the value at that address
+// int* < assigns pointer type
+// int* ptr{ &x } < must assign to an address with &
+// pointers must match the type of its pointee int -> int ect
+//int main()
+//{
+//    int x{ 5 };
+//    int* ptr{ &x }; // initialize ptr with address of variable x
+//
+//    std::cout << x << '\n';    // print x's value
+//    std::cout << *ptr << '\n'; // print the value at the address that ptr is holding (x's address)
+//
+//    *ptr = 6; // The object at the address held by ptr (x) assigned value 6 (note that ptr is dereferenced here)
+//
+//    std::cout << x << '\n';
+//    std::cout << *ptr << '\n'; // print the value at the address that ptr is holding (x's address)
+//
+//    return 0;
+//}
+// the size of a pointer is always the same
+// avoid dangling pointers
+// pointers with no value are null pointers
+// int* ptr { nullptr } initialize null pointer
+// use conditionals to dereference pointers so no crash
+// if (ptr) // true !ptr would mean null pointer value
+//		std::cout << *ptr << '\n';
+// else
+//		//something maybe error message
+//
+// pointers that are not initialized with null or are destroyed will not
+// default to null values - it needs to be set to a null value
+// no easy way to determine if a non-null pointer is valid
+// Favor references over pointers if you can
+
+// PASSING REFERENCES TO FUNCTIONS AS PARAMS
+// 
+// void foo(int a, int& b, const std::string& c)
+// a is passed by value, b by reference, c by const reference
+// passing by reference enables a pass of string or class WITHOUT copying it
+// which is expensive - best to pass by value if object is small tho
+// #define isSmall(T) (sizeof(T) <= 2 * sizeof(void*))
+// can use above function to determine if small enough..
+
+// 8.x.5c
+//
+//template <typename T, typename U>
+//auto sub(T x, U y)
+//{
+//	return x - y;
+//}
+//
+//int main()
+//{
+//	std::cout << sub(3, 2) << '\n';
+//	std::cout << sub(3.5, 2) << '\n';
+//	std::cout << sub(4, 1.5) << '\n';
+//
+//	return 0;
+//}
+
+// 8.x.5b
+//
+//template <typename T>
+//T mult(T x, int y)
+//{
+//	return x * y;
+//}
+//
+//int main()
+//{
+//	std::cout << mult(2, 3) << '\n';
+//	std::cout << mult(1.2, 3) << '\n';
+//
+//	return 0;
+//}
+
+// 8.x.5a
+//
+//template <typename T>
+//T add(T x, T y)
+//{
+//	return x + y;
+//}
+//
+//int main()
+//{
+//	std::cout << add(2, 3) << '\n';
+//	std::cout << add(1.2, 3.4) << '\n';
+//
+//	return 0;
+//}
+
+// NON-TYPE TEMPLATE
+//
+//template <int N> // declare a non-type template parameter of type int named N
+//void print()
+//{
+//    std::cout << N << '\n'; // use value of N here
+//}
+//
+//int main()
+//{
+//    print<5>(); // 5 is our non-type template argument
+//
+//    return 0;
+//}
+
+// FUNCTION TEMPLATES -- another way to overload functions
+// 
+// Base function
+//int max(int x, int y)
+//{
+//    return (x < y) ? y : x;
+//}
+//
+// Template version
+//template <typename T> // this is the template parameter declaration
+//T max(T x, T y) // this is the function template definition for max<T>
+//{  // can use two different template types as params also (T & U) for example
+//	 // might have to make function type auto max instead of T max
+//    return (x < y) ? y : x;
+//}
+//
+// Can be called like this
+// max<int>(1, 2) or this max<double>(1.2, 1.3)
+//
+// Templates needed in multiple files should be defined in a header file
+// and then #included
+//
+// Can also be shortened to this if params are not the same type
+// auto max(auto x, auto y)
+// {
+//	   return (x < y) ? y : x;
+// }
+
+// OVERLOADED FUNCTIONS
+// functions can be duplicated in order to use and produce different types
+// such as int, double, float - long as param and return type matches
+// can even create the same function with a different number of params
 
 //#include "Random.h"
 //#include <limits>
