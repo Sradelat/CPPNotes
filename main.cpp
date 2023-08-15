@@ -2,112 +2,114 @@
 
 
 
-#include "Random.h"
-#include <limits>
 
-void ignoreLine()
-{
-	std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-}
 
-int getGuess(int count)
-{
-	while (true)
-	{
-		std::cout << "Guess #" << count << ": ";
-		int input{};
-		std::cin >> input;
-
-		if (!std::cin)
-		{
-			std::cin.clear();
-			ignoreLine();
-			std::cout << "Oops, that input is invalid. Please try again.\n";
-		}
-		else if (input < 1 || input > 100)
-		{
-			ignoreLine();
-			std::cout << "You cannot guess a number below 1 or above 100.\n";
-		}
-		else
-		{
-			ignoreLine();
-			return input;
-		}
-	}
-}
-
-bool playGame(int correctAnswer, int maxGuesses)
-{
-	for (int count {1}; count <= maxGuesses; ++count)
-	{
-		
-		int input{getGuess(count)};
-
-		if (input == correctAnswer)
-			return true;
-
-		else if (input > correctAnswer)
-			std::cout << "Your guess is too high.\n";
-
-		else
-			std::cout << "Your guess is too low.\n";
-	}
-
-	return false;
-}
-
-bool playAgain()
-{
-	while (true)
-	{
-		std::cout << "Would you like to play again (y/n)?";
-		char input{};
-		std::cin >> input;
-
-		if (!std::cin)
-			std::cin.clear();
-
-		ignoreLine();
-
-		switch (input)
-		{
-		case 'y': 
-			ignoreLine();
-			return true;
-		case 'n': 
-			ignoreLine();
-			return false;
-		default:
-			std::cout << "Oops, that input is invalid. Please try again.\n";
-		}
-	}
-}
-
-int main()
-{
-	constexpr int maxGuesses{7};
-
-	do
-	{
-		int solution{ Random::get(1, 100) };
-
-		std::cout << "Let's play a game. I'm thinking of a number between 1 and"
-			<< " 100. You have 7 tries to guess what it is.\n";
-
-		bool won{ playGame(solution, maxGuesses) };
-		if (won)
-			std::cout << "Correct! You win!\n";
-		else
-			std::cout << "Sorry, you lose. The correct number was "
-			<< solution << ".\n";
-
-	} while (playAgain());
-	
-	std::cout << "Thank you for playing.\n";
-
-	return 0;
-}
+//#include "Random.h"
+//#include <limits>
+//
+//void ignoreLine()
+//{
+//	std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+//}
+//
+//int getGuess(int count)
+//{
+//	while (true)
+//	{
+//		std::cout << "Guess #" << count << ": ";
+//		int input{};
+//		std::cin >> input;
+//
+//		if (!std::cin)
+//		{
+//			std::cin.clear();
+//			ignoreLine();
+//			std::cout << "Oops, that input is invalid. Please try again.\n";
+//		}
+//		else if (input < 1 || input > 100)
+//		{
+//			ignoreLine();
+//			std::cout << "You cannot guess a number below 1 or above 100.\n";
+//		}
+//		else
+//		{
+//			ignoreLine();
+//			return input;
+//		}
+//	}
+//}
+//
+//bool playGame(int correctAnswer, int maxGuesses)
+//{
+//	for (int count {1}; count <= maxGuesses; ++count)
+//	{
+//		
+//		int input{getGuess(count)};
+//
+//		if (input == correctAnswer)
+//			return true;
+//
+//		else if (input > correctAnswer)
+//			std::cout << "Your guess is too high.\n";
+//
+//		else
+//			std::cout << "Your guess is too low.\n";
+//	}
+//
+//	return false;
+//}
+//
+//bool playAgain()
+//{
+//	while (true)
+//	{
+//		std::cout << "Would you like to play again (y/n)?";
+//		char input{};
+//		std::cin >> input;
+//
+//		if (!std::cin)
+//			std::cin.clear();
+//
+//		ignoreLine();
+//
+//		switch (input)
+//		{
+//		case 'y': 
+//			ignoreLine();
+//			return true;
+//		case 'n': 
+//			ignoreLine();
+//			return false;
+//		default:
+//			std::cout << "Oops, that input is invalid. Please try again.\n";
+//		}
+//	}
+//}
+//
+//int main()
+//{
+//	constexpr int maxGuesses{7};
+//
+//	do
+//	{
+//		int solution{ Random::get(1, 100) };
+//
+//		std::cout << "Let's play a game. I'm thinking of a number between 1 and"
+//			<< " 100. You have 7 tries to guess what it is.\n";
+//
+//		bool won{ playGame(solution, maxGuesses) };
+//		if (won)
+//			std::cout << "Correct! You win!\n";
+//		else
+//			std::cout << "Sorry, you lose. The correct number was "
+//			<< solution << ".\n";
+//
+//	} while (playAgain());
+//	
+//	std::cout << "Thank you for playing.\n";
+//
+//	return 0;
+//}
 
 // CHAPTER 7 PROGRAM 2
 //
