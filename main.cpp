@@ -1,25 +1,564 @@
 #include <iostream>  // angled brackets are external directories
 
+// 10.x.1
+//
+//#include <string_view>
+//enum class MonsterType
+//{
+//	ogre,
+//	dragon,
+//	orc,
+//	giant_spider,
+//	slime,
+//};
+//
+//struct Monster
+//{
+//	std::string_view name{};
+//	int health{};
+//	MonsterType type{};
+//};
+//
+//std::string_view getMonsterType(MonsterType type)
+//{
+//	switch (type)
+//	{
+//	case MonsterType::ogre:			return "Ogre";
+//	case MonsterType::dragon:		return "Dragon";
+//	case MonsterType::orc:			return "Orc";
+//	case MonsterType::giant_spider: return "Giant Spider";
+//	case MonsterType::slime:		return "Slime";
+//	default:						return "???";
+//	}
+//}
+//
+//void printMonster(Monster monster)
+//{
+//	std::cout << "This " << getMonsterType(monster.type) << " is named "
+//		<< monster.name << " and has " << monster.health << " health.\n";
+//}
+//
+//int main()
+//{
+//	Monster m1{ "Torg", 145, MonsterType::ogre };
+//	Monster m2{ "Slurp", 23, MonsterType::slime };
+//	printMonster(m1);
+//	printMonster(m2);
+//	return 0;
+//}
+
+// TEMPLATE ARGUEMENT DEDUCTION
+//
+//Don't need deduction guide using std::pair
+//std::pair p2{1, 2}; // implicitly deduced to types int and int
+//
+//Program may need a deduction guide:
+//template <typename T, typename U>
+//struct Pair
+//{
+//	T first{};
+//	U second{};
+//};
+//
+//template <typename T, typename U>
+//Pair(T, U) -> Pair<T, U>;
+//
+//int main()
+//{
+//	Pair<int, int> p1{1, 2}; //explicit - no deduction
+//	Pair p2{ 1, 2 };		 // using deduction
+//	return 0;
+//}
+
+// STD::PAIR
+//
+// Basically does the same as the mix and match class templates in below CLASS TEMPLATES sec
+// 
+// std::pair<int, double> p1 {1, 2.3};
+// std::pair<int, int> p2 {7, 8};
+//
+
+// CLASS TEMPLATES - if in mult files define in header
+//
+//template <typename T>
+//struct Pair
+//{
+//	T first{};
+//	T second{};
+//};
+//
+//// Now we can overload functions with our class template
+//template <typename T>
+//constexpr T max(Pair<T> p)
+//{
+//	return (p.first < p.second ? p.second :p.first)
+//}
+//
+//int main()
+//{
+//	Pair<int>    p1{5, 6};
+//	Pair<double> p2{1.2, 3.4};
+//	Pair<double> p3{7.8, 9.0};  // oo yeah brother
+//
+//	return 0;
+//}
+//
+// Can also mix and match like this:
+// template <typename T>
+// struct Foo
+// {
+//		T first{};
+//		int second{};
+// };
+// 
+// and this:
+// template <typename T, typename U>
+// struct Foo
+// {
+//		T first{};
+//		U second{};
+// };
+
+
+// MISC STRUCT STUFF
+// 
+// Member selection using a pointer - most efficient:
+// 
+// struct Employee
+//{
+//    int id{};
+//    int age{};
+//    double wage{};
+//};
+//
+//int main()
+//{
+//    Employee joe{ 1, 34, 65000.0 };
+//
+//    ++joe.age;
+//    joe.wage = 68000.0;
+//
+//    Employee* ptr{ &joe };
+//    std::cout << ptr->id << '\n'; // Better: use -> to select member from pointer to object
+//
+//    return 0;
+//}
+// 
+// Mixing pointers and non-pointers
+// 
+// struct Paw
+//{
+//    int claws{};
+//};
+//
+//struct Animal
+//{
+//    std::string name{};
+//    Paw paw{};
+//};
+//
+//int main()
+//{
+//    Animal puma{ "Puma", { 5 } };
+//
+//    Animal* ptr{ &puma };
+//
+//    // ptr is a pointer, use ->
+//    // paw is not a pointer, use .
+//
+//    std::cout << (ptr->paw).claws << '\n';
+//
+//    return 0;
+//}
+// 
+// Structs are at least as large as its variables but could be larger
+// due to implicit padding
+//
+// Example 1: - unrelated to size
+//struct Employee
+//{
+//	int id{};
+//	int age{};
+//	double wage{};
+//};
+//
+//struct Company
+//{
+//	int numberOfEmployees{};
+//	Employee CEO{}; // Employee is a struct wiht the Company struct
+//};
+//
+//int main()
+//{
+//	Company myCompany{ 7, {1, 32, 55000.0} }; //Nested init for CEO
+//
+//	return 0;
+//}
+// Example 2: - same thang but different
+//struct Company
+//{
+//    struct Employee // accessed via Company::Employee
+//    {
+//        int id{};
+//        int age{};
+//        double wage{};
+//    };
+//
+//    int numberOfEmployees{};
+//    Employee CEO{}; // Employee is a struct within the Company struct
+//};
+//
+//int main()
+//{
+//    Company myCompany{ 7, { 1, 32, 55000.0 } }; // Nested initialization list to initialize Employee
+//    std::cout << myCompany.CEO.wage << '\n'; // print the CEO's wage
+//
+//    return 0;
+//}
+//
+
+// 10.8.2
+//
+//struct Fraction
+//{
+//	int numerator{0};
+//	int denominator{1};
+//};
+//
+//void printFraction(const Fraction& fraction)
+//{
+//	std::cout << "Your fractions multiplied together: "
+//		<< fraction.numerator << "/" << fraction.denominator << '\n';
+//}
+//
+//Fraction multiplyFraction(const Fraction& f1, const Fraction& f2)
+//{
+//
+//	return { f1.numerator * f2.numerator, f1.denominator * f2.denominator};
+//}
+//
+//Fraction getFraction()
+//{
+//	Fraction temp{};
+//	std::cout << "Enter a value for the numerator: ";
+//	std::cin >> temp.numerator;
+//	std::cout << "Enter a value for the denominator: ";
+//	std::cin >> temp.denominator;
+//	std::cout << '\n';
+//
+//	return temp;  // dont return by reference because itll dingle dangle
+//}
+//
+//int main()
+//{
+//	Fraction f1{getFraction()};
+//	Fraction f2{getFraction()};
+//
+//	printFraction(multiplyFraction(f1, f2));
+//
+//	return 0;
+//}
+
+// 10.8.1
+// not exactly the same answer but same principle
+//struct Ad
+//{
+//	int views{};
+//	double percUsersClicked{};
+//	double earningsPerClick{};
+//};
+//
+//double calculateEarnings(const Ad& ad)
+//{
+//	return ad.views * ad.percUsersClicked * ad.earningsPerClick;
+//}
+//
+//void printAndCalculateAd(const Ad& ad)
+//{
+//	std::cout << "Views:           " << ad.views << '\n';
+//	std::cout << "% of Users:      " << ad.percUsersClicked << '\n';
+//	std::cout << "$ per Click:     " << ad.earningsPerClick << '\n';
+//	std::cout << "Earnings today: $" << calculateEarnings(ad) << '\n';
+//}
+//
+//int main()
+//{
+//	Ad burger{100, 0.5, 0.25};
+//
+//	printAndCalculateAd(burger);
+//
+//	return 0;
+//}
+
+//RETURNING STRUCTS FROM FUNCTIONS BY VALUE
+//
+//struct Point3d
+//{
+//	double x{0.0};
+//	double y{0.0};
+//	double z{0.0};
+//};
+//
+//Point3d getZeroPoint()
+//{
+//	//Point3d temp{ 0.0, 0.0, 0.0 };
+//	//return temp;  // redundant
+//
+//	//return Point3d{ 0.0, 0.0, 0.0 };  // efficient but still redundant
+//
+//	return {}; // most efficent because of return type
+//}
+//
+//int main()
+//{
+//	Point3d zero{ getZeroPoint() };
+//
+//	return 0;
+//}
+
+//PASSING STRUCTS TO FUNCTIONS (BY REFERENCE).. generally
+//
+//struct Employee
+//{
+//	int id{};
+//	int age{};
+//	double wage{};
+//};
+//// passing by reference avoids expensive copy
+//void printEmployee(const Employee& employee) // by reference using only 1 param
+//{ 
+//	std::cout << "ID:    " << employee.id << '\n';
+//	std::cout << "Age:   " << employee.age << '\n';
+//	std::cout << "Wage:  " << employee.wage << '\n';
+//}
+//
+//int main()
+//{
+//	Employee joe{ 14, 32, 24.15 };
+//	Employee frank{ 15, 28, 18.27 };
+//
+//	printEmployee(joe);
+//
+//	std::cout << '\n';
+//
+//	printEmployee(frank);
+//
+//	return 0;
+//}
+
+//AGGREGATE INITIALIZATION
+//struct Employee
+//{
+//	int id{}; // always use braces
+//	int age{}; // can add default value here
+//	double wage{}; // best to add new members to the bottom
+//};
+//
+//int main()
+//{
+//	Employee frank = { 1, 32, 60000.0 }; // copy-list init using braced list
+//	Employee joe{ 2, 28, 45000.0 }; // list init using braced list (preferred)
+//	Employee robert(3, 45, 62500.0); // avoid
+//	Employee rick{ 2, 28 }; // valid but leaves wage at 0.0
+//	Employee ned{}; // init with all values 0.0
+//	const Employee ceo{}; // can be const
+//	Employee judy{ .id{12}, .wage{80000.0} }; // by value - adds clutter tho
+//
+//	Employee joe = { joe.id, 33, 66000.0 }; //change multiple values
+//	//or
+//	joe = { .id = joe.id, .age = 33, .wage = 66000.0 };
+//
+//	Employee nick{}; //always use braces
+//
+//	return 0;
+//}
+
+// STRUCTURES - are also aggregates
+//struct Employee  // type definition - not an object
+//{
+//	int id{};  // these are data members or member variables
+//	int age{};
+//	double wage{};
+//};
+//
+//int main()
+//{
+//	Employee joe;  // Employee type, joe variable name
+//	joe.id = 14;
+//	joe.age = 32; // OoOoo looks familiar
+//	joe.wage = 60000.0;
+//
+//	Employee frank;
+//	frank.id = 15;
+//	frank.age = 28;
+//	frank.wage = 45000.0;
+//
+//	int totalAge{ joe.age + frank.age };
+//
+//	if (joe.wage > frank.wage)
+//		std::cout << "Joe makes more than Frank\n";
+//	else if (joe.wage < frank.wage)
+//		std::cout << "Joe makes less than Frank\n";
+//	else
+//		std::cout << "Joe and Frank make the same amount\n";
+//
+//	// Frank got a promotion
+//	frank.wage += 5000.0;
+//
+//	// Today is Joe's birthday
+//	++joe.age;
+//
+//	return 0;
+//}
+
+//10.4.1
+//
+//enum class Animal
+//{
+//	pig,
+//	chicken,
+//	goat,
+//	cat,
+//	dog,
+//	duck,
+//};
+//
+//std::string_view getAnimalName(Animal animal)
+//	{
+//	using enum Animal;
+//	switch (animal)
+//	{
+//	case pig:	  return "pig";
+//	case goat:	  return "goat";
+//	case cat:	  return "cat";
+//	case dog:	  return "dog";
+//	case duck:    return "duck";
+//	case chicken: return "chicken";
+//	default:      return "no";
+//	}
+//	}
+//
+//void printNumberOfLegs(Animal animal)
+//{
+//	std::cout << "A " << getAnimalName(animal) << " has ";
+//
+//	using enum Animal;
+//	switch (animal)
+//	{
+//	case pig:
+//	case goat:
+//	case cat:
+//	case dog:
+//		std::cout << 4;
+//		break;
+//	case duck:
+//	case chicken: 
+//		std::cout << 2;
+//		break;
+//	default:      
+//		std::cout << "no";
+//	}
+//
+//	std::cout << " legs.\n";
+//}
+//
+//int main()
+//{
+//	printNumberOfLegs(Animal::cat);
+//	printNumberOfLegs(Animal::chicken);
+//
+//	return 0;
+//}
+
+// TYPE CONVERTING SCOPED ENUMS
+//#include <utility>
+//
+//int main()
+//{
+//	enum class Color
+//	{
+//		red,
+//		blue,
+//	};
+//
+//	Color color{ Color::blue };
+//
+//	std::cout << color << '\n'; // wont work no int conversion
+//	std::cout << static_cast<int>(color) << '\n'; // explicit conversion
+//	std::cout << std::to_underlying(color) << '\n'; // convert to underlying
+//	// can also static_cast to take input:
+//	int input{};
+//	std::cin >> input;
+//	Color color{ static_cast<Color>(input) };
+//  using enum Color; // allows use without prefixes like Color::
+//}
+
+//SCOPED ENUMS - do not implicitly convert to int
+//int main()
+//{
+//	enum class Color //"enum class" defines this as a scoped enum
+//	{
+//		red, // red is considered part of color's scope region
+//		blue,
+//	};
+//
+//	enum class Fruit
+//	{
+//		banana, // banana is considered part of Fruit's scope region
+//		apple,
+//	};
+//
+//	Color color{ Color::red }; // note: red is not directly accessible
+//	Fruit fruit{ Fruit::banana }; // we have to use Color::red
+//
+//	if (color == fruit) // compile error
+//		std::cout << "color and fruit are equal\n";
+//	else
+//		std::cout << "color and fruit are not equal\n";
+//
+//	return 0;
+//}
+
+//ENUM WITH ASSIGNED INT VALUE FOR INITIALIZATION
+//enum Pet: int // we've specified a base
+//{
+//    cat, // assigned 0
+//        dog, // assigned 1
+//        pig, // assigned 2
+//        whale, // assigned 3
+//};
+//
+//int main()
+//{
+//    Pet pet1{ 2 }; // ok: can brace initialize with integer
+//    Pet pet2(2);   // compile error: cannot direct initialize with integer
+//    Pet pet3 = 2;   // compile error: cannot copy initialize with integer
+//
+//    pet1 = 3;       // compile error: cannot assign with integer
+//
+//    return 0;
+//}
+
 // 10.2.2
 //
-namespace Monster
-{
-	enum MonsterType
-	{
-		orc,
-		goblin,
-		troll,
-		ogre,
-		skeleton,
-	};
-}
-
-int main()
-{
-	Monster::MonsterType monster{Monster::troll};
-	if (monster == Monster::troll)
-		return 0;
-}
+//namespace Monster
+//{
+//	enum MonsterType
+//	{
+//		orc,
+//		goblin,
+//		troll,
+//		ogre,
+//		skeleton,
+//	};
+//}
+//
+//int main()
+//{
+//	Monster::MonsterType monster{Monster::troll};
+//	if (monster == Monster::troll)
+//		return 0;
+//}
 
 // 10.2.1
 //
@@ -39,9 +578,9 @@ int main()
 //    // The names Color, red, blue, and green are defined inside namespace Color
 //    enum Color
 //    {
-//        red,
-//        green,
-//        blue,
+//        red, //assigned 0
+//        green, //assigned 1
+//        blue,  // can also be assigned any number even negative
 //    };
 //}
 //
