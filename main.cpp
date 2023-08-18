@@ -1,5 +1,521 @@
 #include <iostream>  // angled brackets are external directories
 
+// 11.11.1
+//
+int main()
+{
+	std::cout << "How many names do you wish to enter: ";
+	// looks complicated - will finish next time
+	return 0;
+}
+
+
+
+
+// DYNAMIC ARRAY ALLOCATION
+//
+// Example:
+//#include <cstddef>
+//
+//int main()
+//{
+//	std::cout << "Enter a position integer: ";
+//	std::size_t length{};
+//	std::cin >> length;
+//
+//	int* array{ new int[length] {} }; // use array new. Note that length does not need to be constant!
+//									  // implicitly allocates array. For explicit allocation use new[]
+//	std::cout << "I just allocated an array of integers of length " << length << '\n';
+//
+//	array[0] = 5; //set element 0 to value 5
+//
+//	delete[] array; // use array delete to deallocate array
+//
+//	return 0;
+//}
+// int* array{ new int[5]{ 9, 7, 5, 3, 1 } }; //list initialize dynamic array
+// auto* array{ new int[5]{ 9, 7, 5, 3, 1 } }; // useful for longer type names
+// to resize an array use std::vector - learned later
+
+// DYNAMIC MEMORY ALLOCATION - single values
+//
+// new int; // dynamically allocate an interger( and discard the result )
+// 'new' in this case creates assigns integer worth of memory, creates an object, and returns the address of that memory
+// int* ptr{ new int}; //dynamically allocate an integer and assign the address to ptr so we can access it later
+// *ptr = 7; // assign value of 7 to allocated memory
+//
+// int* ptr1{ new int (5) }; // use direct initialization - parenthesis
+// int* ptr2{ new int { 6 } }; // use uniform initialization - curly bracket
+// delete ptr1; // return the memory pointed to by ptr to the OS
+// ptr2 = nullptr; // set ptr to be a null pointer
+//
+// Avoid having multiple pointers point at the same piece of memory if possible
+// When a pointer is deleted, if the pointer is not going out of scope immediately after,
+// set the pointer to a nullptr.
+//
+// To handle cases where not enough memory:
+// int* value { new (std::nothrow) int }; // value will be nullptr if allocation fails
+// if (!value) // handle case where new return null
+//		handle exception here
+//
+// Memory leaks occur when a pointer goes out of scope before deleting the allocation
+// - Can also happen when reassigning the pointer
+
+// 11.8.2
+//
+//#include <iterator>
+//
+//int* findValue(int* beginning, int* end, int value)
+//{
+//    int* iterator{beginning};
+//    while (iterator != end)
+//    {
+//        if (*iterator == value)
+//            return iterator;
+//
+//        ++iterator;
+//    }
+//
+//    return end;
+//}
+//
+//int main()
+//{
+//    int arr[]{ 2, 5, 4, 10, 8, 20, 16, 40 };
+//
+//    // Search for the first element with value 20.
+//    int* found{ findValue(std::begin(arr), std::end(arr), 20) };
+//
+//    // If an element with value 20 was found, print it.
+//    if (found != std::end(arr))
+//    {
+//        std::cout << *found << '\n';
+//    }
+//
+//    return 0;
+//}
+
+// ARRAY DECAY
+//
+// Arrays decay into a pointer when passed to functions
+// Arrays do not decay in structs or classes passed to functions
+// Arrays passed by reference do not decay
+
+// 11.4.4
+// 
+//#include <iterator>
+//#include <utility>
+//
+//int main()
+//{
+//	int array[]{ 6, 3, 2, 9, 7, 1, 5, 4, 8 };
+//
+//	int length{ static_cast<int>(std::size(array)) };
+//	for (int iteration{}; iteration < length-1; ++iteration)
+//	{
+//		bool swapOccured = false;
+//		int stopHere{length - iteration};
+//		for (int i{}; i < stopHere-1; ++i)
+//		{
+//			int nextIndex{ i + 1 };
+//			if (array[i] > array[nextIndex])
+//			{
+//				std::swap(array[i], array[i + 1]);
+//				swapOccured = true;
+//			}
+//		}
+//		std::cout << "Iteration: " << iteration << '\n';
+//		if (!swapOccured)
+//		{
+//			std::cout << "Early termination on iteration " << iteration + 1 << '\n';
+//			break;
+//		}
+//	}
+//	// print array
+//	for (int element{}; element < std::size(array); ++element)
+//	{
+//		std::cout << array[element] << ' ';
+//	}
+//	return 0;
+//}
+
+// 11.4.3
+//
+//#include <iterator>
+//#include <utility>
+//int main()
+//{
+//	int array[]{ 6, 3, 2, 9, 7, 1, 5, 4, 8 };
+//
+//	for (int element{}; element < (std::size(array) - 1); ++element)
+//	{
+//		for (int h{}; h < (std::size(array) - 1); ++h)
+//		{
+//			int nextIndex{ h + 1 };
+//			if (array[h] > array[nextIndex])
+//			{
+//				std::swap(array[h], array[h + 1]);
+//			}
+//		}
+//		for (int i{}; i < std::size(array); ++i)
+//		{
+//			std::cout << array[i] << ' ';
+//		}
+//		std::cout << '\n';
+//	}
+//	// print array
+//	for (int element{}; element < std::size(array); ++element)
+//	{
+//		std::cout << array[element] << ' ';
+//	}
+//	return 0;
+//}
+
+// 11.4.2
+//
+//#include <iterator>
+//#include <utility>
+//
+//int main()
+//{
+//	int array[]{ 30, 50, 20, 10, 40 };
+//	constexpr int length{ static_cast<int>(std::size(array)) };
+//
+//	// Step through each element of the array
+//	// (except the last one, which will already be sorted by the time we get there)
+//	for (int startIndex{ 0 }; startIndex < length - 1; ++startIndex)
+//	{
+//		// smallestIndex is the index of the smallest element we’ve encountered this iteration
+//		// Start by assuming the smallest element is the first element of this iteration
+//		int smallestIndex{ startIndex };
+//
+//		// Then look for a smaller element in the rest of the array
+//		for (int currentIndex{ startIndex + 1 }; currentIndex < length; ++currentIndex)
+//		{
+//			// If we've found an element that is smaller than our previously found smallest
+//			if (array[currentIndex] > array[smallestIndex])
+//				// then keep track of it
+//				smallestIndex = currentIndex;
+//		}
+//
+//		// smallestIndex is now the index of the smallest element in the remaining array
+//                // swap our start element with our smallest element (this sorts it into the correct place)
+//		std::swap(array[startIndex], array[smallestIndex]);
+//	}
+//
+//	// Now that the whole array is sorted, print our sorted array as proof it works
+//	for (int index{ 0 }; index < length; ++index)
+//		std::cout << array[index] << ' ';
+//
+//	std::cout << '\n';
+//
+//	return 0;
+//}
+
+// 11.4.1
+//
+//30 60 20 50 40 10
+//10 60 20 50 40 30
+//10 20 60 50 40 30
+//10 20 30 50 40 60
+//10 20 30 40 50 60
+
+// SORT ARRAY - the easy way
+//
+// #include <algorithm>
+// std::sort(std::begin(array), std::end(array);
+
+// SORT ARRAY - the manual way
+//#include <iterator>
+//#include <utility>
+//
+//int main()
+//{
+//	int array[]{ 30, 50, 20, 10, 40 };
+//	constexpr int length{ static_cast<int>(std::size(array)) };
+//
+//	// Step through each element of the array
+//	// (except the last one, which will already be sorted by the time we get there)
+//	for (int startIndex{ 0 }; startIndex < length - 1; ++startIndex)
+//	{
+//		// smallestIndex is the index of the smallest element we’ve encountered this iteration
+//		// Start by assuming the smallest element is the first element of this iteration
+//		int smallestIndex{ startIndex };
+//
+//		// Then look for a smaller element in the rest of the array
+//		for (int currentIndex{ startIndex + 1 }; currentIndex < length; ++currentIndex)
+//		{
+//			// If we've found an element that is smaller than our previously found smallest
+//			if (array[currentIndex] < array[smallestIndex])
+//				// then keep track of it
+//				smallestIndex = currentIndex;
+//		}
+//
+//		// smallestIndex is now the index of the smallest element in the remaining array
+//				// swap our start element with our smallest element (this sorts it into the correct place)
+//		std::swap(array[startIndex], array[smallestIndex]);
+//	}
+//
+//	// Now that the whole array is sorted, print our sorted array as proof it works
+//	for (int index{ 0 }; index < length; ++index)
+//		std::cout << array[index] << ' ';
+//
+//	std::cout << '\n';
+//
+//	return 0;
+//}
+
+// 11.3.4
+//
+//#include <string_view>
+//#include <iterator> // for std::size
+//
+//int main()
+//{
+//	int divisors[]{3, 5, 7, 11, 13, 17, 19};
+//	std::string_view words[]{"fizz", "buzz", "pop", "bang", "jazz", "pow", "boom"};
+//
+//	static_assert(std::size(divisors) == std::size(words));
+//
+//	int numRange{ 150 };
+//	for (int num{1}; num <= numRange; ++num)
+//	{
+//		int divIndex{ 0 };
+//		bool isDiv{ false };
+//
+//		do
+//		{
+//			if (num % divisors[divIndex] == 0)
+//			{
+//				std::cout << words[divIndex];
+//				isDiv = true;
+//			}
+//			++divIndex;
+//		} while (divIndex < std::size(divisors));
+//
+//		if (!isDiv)
+//			std::cout << num << '\n';
+//		else
+//			std::cout << '\n';
+//	}
+//
+//	return 0;
+//}
+
+// 11.3.3
+//
+//#include <iterator> // for std::size
+//
+//int main()
+//{
+//	constexpr int scores[]{ 84, 92, 76, 81, 56 };
+//
+//	int maxScore{ 0 };
+//	int maxScoreIndex{};
+//
+//	for (int student{ 0 }; student < static_cast<int>(std::size(scores)); ++student)
+//	{
+//		if (scores[student] > maxScore)
+//		{
+//			maxScore = scores[student];
+//			maxScoreIndex = student;
+//		}
+//	}
+//
+//	std::cout << "The best score's index was " << scores[maxScoreIndex] << '\n';
+//
+//	return 0;
+//}
+
+// 11.3.2
+//
+//#include <iterator> // for std::size
+//#include <limits> // for ignore extra input
+//int getNumber()
+//{
+//
+//	int num{};
+//
+//	do  // really need to get into do while loops
+//	{
+//		std::cout << "Enter a number between 1 and 9: ";
+//
+//
+//		std::cin >> num;
+//
+//		if (std::cin.fail())
+//			std::cin.clear();
+//
+//		std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+//
+//	} while (num < 1 || num > 9);
+//
+//}
+//
+//int main()
+//{
+//	constexpr int array[]{ 4, 6, 7, 3, 8, 2, 1, 9, 5 };
+//	constexpr int arraySize{ static_cast<int>(std::size(array)) };
+//
+//	int chosenNum{getNumber()};
+//	int indexNum{};
+//	for (int element{ 0 }; element < arraySize; ++element)
+//	{
+//		if (array[element] == chosenNum)
+//		{
+//			indexNum = element;
+//		}
+//		std::cout << array[element] << ' ';
+//	}
+//
+//	std::cout << '\n';
+//	std::cout << "The number " << chosenNum << " has index " << indexNum;
+//	std::cout << '\n';
+//
+//	return 0;
+//}
+
+// 11.3.1
+//
+//#include <iterator> // for std::size
+//
+//int main()
+//{
+//	constexpr int array[]{ 4, 6, 7, 3, 8, 2, 1, 9, 5 };
+//	constexpr int arraySize{ static_cast<int>(std::size(array)) };
+//
+//	for (int element{ 0 }; element < arraySize; ++element)
+//	{
+//		std::cout << array[element] << ' ';
+//	}
+//	
+//	std::cout << '\n';
+//
+//	return 0;
+//}
+
+// FOR LOOP ARRAY
+//
+// Find best score example:
+//#include <iterator> // for std::size
+//
+//int main()
+//{
+//	// score are 0 (worst) to 100 (best)
+//	constexpr int scores[]{ 84, 92, 76, 81, 56 };
+//	constexpr int numStudents{ static_cast<int>(std::size(scores)) };
+//
+//	int maxScore{0}; // keep track of our largest score
+//	for (int student{ 0 }; student < numStudents; ++student)
+//	{
+//		if (scores[student] > maxScore)
+//		{
+//			maxScore = scores[student];
+//		}
+//	}
+//
+//	std::cout << "the best score was " << maxScore << '\n';
+//
+//	return 0;
+//}
+
+// 11.2.1
+//#include <iterator> // for std::size
+//namespace Animals
+//{
+//	enum Animals
+//	{
+//		chicken,
+//		dog,
+//		cat,
+//		elephant,
+//		duck,
+//		snake,
+//		numberOfAnimals,
+//	};
+//}
+//int main()
+//{
+//	//double temp[365]{}; // compiler didnt like that
+//
+//	int legs[]{2, 4, 4, 4, 2, 0};
+//	static_assert(std::size(legs) == Animals::numberOfAnimals);
+//
+//	std::cout << "An elephant has " << legs[Animals::elephant] << " legs.";
+//
+//	return 0;
+//}
+
+
+// FIND ARRAY LENGTH
+//
+// std::size(array) // does not work inside functions because array decays  into pointer
+
+// PASSING ARRAYS TO FUNCTIONS
+//
+// void print(int array[]) // array is modifiable in this function
+// void print(const int array[]) // fixes that problem
+// When passing an array to a function it decays into a pointer
+// That explains why an out of scope array can be changed in a function
+
+// FIXED ARRAYS - fixed as in length not fixed elements
+//
+// int numberOfDaysPerWeek[7]{}; // example of array with length 7 
+// These are fixed and cannot be changed
+// Cannot be defined with input or other run time variables
+// int prime[5]{2, 3, 5, 7, 11}; // init list with 5 elements
+// int prime[]{2, 3, 5}; // omitted length so it can be changed
+//
+// Example avoiding magic index numbers:
+//enum StudentNames
+//{
+//	kenny,		 // 0
+//	kyle,		 // 1
+//	stan,		 // 2
+//	butter,		 // 3
+//	cartman,	 // 4
+//	wendy,		 // 5 
+//	max_students // 6
+//};
+//
+//int main()
+//{
+//	int testScores[max_students]{}; //allocate 6 integers
+//	testScores[stan] = 76;
+//
+//	return 0;
+//}
+
+// 10.x.3
+//
+//template <typename T>
+//struct Triad
+//{
+//	T x{};
+//	T y{};
+//	T z{};
+//};
+//
+//template <typename T>
+//Triad(T, T, T) -> Triad<T>;
+//
+//template <typename T>
+//void print(Triad<T> nums)
+//{
+//	std::cout << '[' << nums.x << ", " << nums.y << ", " << nums.z << ']';
+//}
+//
+//int main()
+//{
+//	Triad t1{ 1, 2, 3 };
+//	print(t1);
+//
+//	Triad t2{ 1.2, 3.4, 5.6 };
+//	print(t2);
+//
+//	return 0;
+//}
+
 // 10.x.1
 //
 //#include <string_view>
@@ -61,7 +577,7 @@
 //};
 //
 //template <typename T, typename U>
-//Pair(T, U) -> Pair<T, U>;
+//Pair(T, U) -> Pair<T, U>; // would be Pair(T, T) if second was also T
 //
 //int main()
 //{
