@@ -1,16 +1,143 @@
 #include <iostream>  // angled brackets are external directories
 
+//STD::VECTOR - can handle its own memory management
+//
+//#include <vector>
+//
+////no need to specify length at the declaration
+//std::vector<int> v {};
+//std::vector<int> v2 = { 9, 7, 5, 3, 1 }; // use init list to init vector
+//std::vector<int> v3 {9, 7, 5, 3, 1}; //uniform init
+//
+//// as with std::array, the type can be omitted
+//std::vector v4 {9, 7, 5, 3, 1}; //deduced to std::vector<int>
+//// when a vector goes out of scope there will be no memory leak
+//// vectors do not decay in functions
+//
+//int main()
+//{
+//	std::vector v {0, 1, 2};
+//	//RESIZING VECTORS is easy but expensive
+//	v.resize(5); // set size to 5 (rest will be 0s)
+//	std::vector<int> v(5); // init with size 5
+//	std::vector<int> d(3, 4); // size 3 with values 4, 4, and 4
+//	return 0;
+//}
+// returning an array from a func is expensive but not if using vector instead
+
+
+//STD::ARRAY
+//
+// std::array<int, 3> myArray {3 shits here}; //length 3 and does not decay and not dynamic
+// std::array myArray {shit here}; //deducted length and type
+// myArray[1] = 3; //normal index - other indexing below
+// myArray.at(9) = 10; //if length is less than 9 - runtime error
+// myArray.size(); // get length - works in functions since no decay
+// Pass arrays by reference to avoid expensive copies
+// Array param type must have format <int, 3> for type and length
+// Get around this by using templates (example):
+//
+//#include <array>
+//
+//template <typename T, std::size_t size> // parameterize type and size
+//void printArray(const std::array<T, size>& myArray)
+//{
+//	for (auto element : myArray)
+//		std::cout << element << ' ';
+//	std::cout << '\n';
+//}
+//
+//int main()
+//{
+//	std::array myArray5{9.0, 7.2, 5.4, 3.6, 1.8};
+//	printArray(myArray5);
+//
+//	std::array myArray7{9.0, 7.2, 5.4, 3.6, 1.8, 0.7};
+//	printArray(myArray7);
+//
+//	return 0;
+//}
+
+// VOID POINTER - avoid using if possible
+//
+// void pointers can be assigned to any type but cannot be dereferenced without
+// fixing the type
+
+// 11.12.1
+//
+//#include <sstream>
+//#include <string_view>
+//
+//int main()
+//{
+//	std::string_view names[]{"Alex", "Betty", "Caroline", "Dave", "Emily", "Fred",
+//	"Greg", "Holly"};
+//
+//	std::cout << "Enter a name: ";
+//	std::string name{};
+//	std::getline(std::cin, name);
+//
+//	bool found{ false };
+//	for (const auto& element : names)
+//	{
+//		if (name == element)
+//		{
+//			std::cout << name << " was found.";
+//			found = true;
+//			break;
+//		}
+//	}
+//
+//	if (!found)
+//		std::cout << name << " was not found.";
+//
+//	return 0;
+//}
+
+// FOR-EACH LOOP - ranged based loop to iterate through every element in a list (or other)
+//
+//for (auto num : array); // best to use auto probably
+//for (auto& string : array) // for string elements use reference
+//wont work with pointers cause pointers dont know the length
+//for (int i{}; auto num : array) // i is for index tracking
+
 // 11.11.1
 //
-int main()
-{
-	std::cout << "How many names do you wish to enter: ";
-	// looks complicated - will finish next time
-	return 0;
-}
-
-
-
+//#include <string>
+//#include <sstream>
+//#include <algorithm>
+//#include <string_view>
+//
+//int main()
+//{
+//	std::size_t length{};
+//	std::cout << "How many names do you wish to enter: ";
+//	std::cin >> length;
+//	std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+//
+//	auto* array{ new std::string[length]{} };
+//
+//	for (int count{ 0 }; count < length; ++count)
+//	{
+//		std::string name;
+//		std::cout << "Enter name #" << count + 1 << ": ";
+//		std::getline(std::cin, name);
+//
+//		array[count] = name;
+//		std::cout << array[count] << '\n';
+//
+//	}
+//	for (int count{}; count < length; ++count)
+//		std::cout << array[count] << " ";
+//
+//	std::cout << '\n';
+//	std::sort(array, array + length);
+//
+//	for (int count{}; count < length; ++count)
+//		std::cout << array[count] << " ";
+//
+//	return 0;
+//}
 
 // DYNAMIC ARRAY ALLOCATION
 //
