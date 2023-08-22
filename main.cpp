@@ -1,69 +1,124 @@
 #include <iostream>  // angled brackets are external directories
 
 
-// 11.x.2
+//11.x.4
 //
-#include <vector>
 #include <string_view>
-#include <string>
-#include <cstddef>  //size_t
-#include <algorithm> // sort
 
-struct Student
+void printString(const char* string)
 {
-	std::string name{};
-	int grade{};
-};
-
-int getClassSize()
-{
-	int classSize{};
-	do
+	while (static_cast<int>(*string) != 0)
 	{
-		std::cout << "How many students do you want to enter? ";
-		std::cin >> classSize;
-	} while (classSize <= 0);
-
-	return classSize;
-}
-
-std::vector<Student> createStudentList()
-{
-	using Students = std::vector<Student>;
-	Students students(static_cast<Students::size_type> (getClassSize()));
-
-	for (Student& i : students)
-	{
-		std::cout << "Enter student's name: ";
-		std::cin >> i.name;
-
-		std::cout << "Enter " << i.name << "'s grade: ";
-		std::cin >> i.grade;
+		std::cout << *string;
+		++string;
 	}
 
-	return students;
-}
 
-bool sortStudents(Student& a, Student& b)
-{
-	return (a.grade > b.grade);
+	//std::cout << *string;
+	//++string;
+	//std::cout << *string;
+
+
+
+	//std::string deref {*string};
+	//for (int ch{}; ch == deref.size(); ++string)
+	//{
+	//	
+	//}
 }
 
 int main()
 {
-	std::vector<Student> student_list = { createStudentList() };
-
-
-	std::sort(student_list.begin(), student_list.end(), sortStudents);
-
-	std::cout << "After sort:\n";
-	for (Student k : student_list)  // FOR LATER
-	{
-		std::cout << k.name << " got a grade of " << k.grade;
-	}
+	printString("Hello World!");
 
 	return 0;
 }
+
+
+//11.x.3
+//
+//void swapNums(int& x, int& y)
+//{
+//	int holDis{ x };
+//	x = y;
+//	y = holDis;
+//}
+//
+//int main()
+//{
+//	int x{ 2 };
+//	int y{ 3 };
+//
+//	swapNums(x, y);
+//
+//	std::cout << "Variable x: " << x << "   Variable y: " << y;
+//
+//	return 0;
+//}
+
+// 11.x.2
+//
+//#include <vector>
+//#include <string_view>
+//#include <string>
+//#include <cstddef>  //size_t
+//#include <algorithm> // sort
+//
+//struct Student
+//{
+//	std::string name{};
+//	int grade{};
+//};
+//
+//int getClassSize()
+//{
+//	int classSize{};
+//	do
+//	{
+//		std::cout << "How many students do you want to enter? ";
+//		std::cin >> classSize;
+//	} while (classSize <= 0);
+//
+//	return classSize;
+//}
+//
+//std::vector<Student> createStudentList()
+//{
+//	using Students = std::vector<Student>;
+//	Students students(static_cast<Students::size_type> (getClassSize()));
+//
+//	for (Student& i : students)
+//	{
+//		std::cout << "Enter student's name: ";
+//		std::cin >> i.name;
+//
+//		std::cout << "Enter " << i.name << "'s grade: ";
+//		std::cin >> i.grade;
+//	}
+//
+//	return students;
+//}
+//
+//bool sortStudents(Student& a, Student& b)
+//{
+//	return (a.grade > b.grade);
+//}
+//
+//int main()
+//{
+//	std::vector<Student> student_list = { createStudentList() };
+//
+//
+//	std::sort(student_list.begin(), student_list.end(), sortStudents);
+//
+//	std::cout << "After sort:\n";
+//	for (Student k : student_list)  // FOR LATER
+//	{
+//		std::cout << k.name << " got a grade of " << k.grade << '\n';
+//	}
+//
+//	return 0;
+//}
 
 // 11.x.1
 // 
