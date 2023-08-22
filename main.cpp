@@ -1,5 +1,303 @@
 #include <iostream>  // angled brackets are external directories
 
+
+// 11.x.2
+//
+#include <vector>
+#include <string_view>
+#include <string>
+#include <cstddef>  //size_t
+#include <algorithm> // sort
+
+struct Student
+{
+	std::string name{};
+	int grade{};
+};
+
+int getClassSize()
+{
+	int classSize{};
+	do
+	{
+		std::cout << "How many students do you want to enter? ";
+		std::cin >> classSize;
+	} while (classSize <= 0);
+
+	return classSize;
+}
+
+std::vector<Student> createStudentList()
+{
+	using Students = std::vector<Student>;
+	Students students(static_cast<Students::size_type> (getClassSize()));
+
+	for (Student& i : students)
+	{
+		std::cout << "Enter student's name: ";
+		std::cin >> i.name;
+
+		std::cout << "Enter " << i.name << "'s grade: ";
+		std::cin >> i.grade;
+	}
+
+	return students;
+}
+
+bool sortStudents(Student& a, Student& b)
+{
+	return (a.grade > b.grade);
+}
+
+int main()
+{
+	std::vector<Student> student_list = { createStudentList() };
+
+
+	std::sort(student_list.begin(), student_list.end(), sortStudents);
+
+	std::cout << "After sort:\n";
+	for (Student k : student_list)  // FOR LATER
+	{
+		std::cout << k.name << " got a grade of " << k.grade;
+	}
+
+	return 0;
+}
+
+// 11.x.1
+// 
+//#include <array>
+//#include <numeric>
+//
+//enum ItemTypes
+//{
+//	health_potions = 0,
+//	torches,
+//	arrows,
+//	max_items,
+//};
+//
+//using Inventory = std::array<int, ItemTypes::max_items>;
+//
+//int countTotalItems(const Inventory& items)
+//{
+//	return std::reduce(items.begin(), items.end());
+//}
+//
+//int main()
+//{
+//	Inventory items {2, 5, 10};
+//
+//	std::cout << "Total number of items: " << countTotalItems(items) << '\n';
+//	std::cout << "Number of torches: " << items[ItemTypes::torches] << '\n';
+//
+//	return 0;
+//}
+
+//STD::REDUCE - gives sum of all elements in no particular order
+//STD::ACCUMLATE - same as reduce but left to right - use if reduce isnt supported
+//STD::SHUFFLE - takes list and randomly re-orders elements
+//#include <algorithm> // shuffle
+//#include <array>
+//#include <chrono>
+//#include <numeric> // reduce
+//#include <random>
+//
+//int main()
+//{
+//	std::array arr{1, 2, 3, 4};
+//
+//	std::cout << std::reduce(arr.begin(), arr.end()) << '\n'; //10 - supported
+//
+//	// The 0 is the initial value
+//	std::cout << std::accumulate(arr.begin(), arr.end(), 0) << '\n'; //10
+//
+//	// way over my head
+//	std::mt19937 mt {static_cast<unsigned int>(std::chrono::steady_clock::now().time_since_epoch().count())};
+//	std::shuffle(arr.begin(), arr.end(), mt);
+//
+//	for (int i : arr)
+//	{
+//		std::cout << i << ' ';
+//	}
+//
+//	std::cout << '\n';
+//
+//	return 0;
+//}
+
+//STD::FOR_EACH - do something to all elements of a container
+//
+//#include <algorithm>
+//#include <array>
+//
+//void doubleNumber(int& i)
+//{
+//	i *= 2;
+//}
+//
+//int main()
+//{
+//	std::array arr{1, 2, 3, 4};
+//
+//	// can use for_each(STD::NEXT(arr.begin(), arr.end(), doubleNumber);
+//	// to start with the second element
+//	std::for_each(arr.begin(), arr.end(), doubleNumber);
+//
+//	for (int i : arr)
+//	{
+//		std::cout << i << ' ';
+//	}
+//
+//	std::cout << '\n';
+//
+//	return 0;
+//}
+
+//STD::SORT - custom sort with function POINTER no parentheses ()
+//
+//#include <algorithm>
+//#include <array>
+//
+//bool greater(int a, int b)
+//{
+//	// Order @a before @b if @a is greater than @b.
+//	return (a > b);
+//}
+//
+// there is actually a std::greater{} call for this function
+//int main()
+//{
+//	std::array arr{13, 90, 99, 5, 40, 80};
+//
+//	//Pass greater to std::sort
+//	std::sort(arr.begin(), arr.end(), greater);
+//
+//	for (int i : arr)
+//	{
+//		std::cout << i << ' ';
+//	}
+//
+//	std::cout << '\n';
+//	return 0;
+//}
+
+//STD::COUNT / STD::COUNT_IF - search for all occurrences of an element or an element fulfilling a condition
+//
+//#include <array>
+//#include <algorithm>
+//#include <string_view>
+//
+//bool containsNut(std::string_view str)
+//{
+//	return (str.find("nut") != std::string_view::npos);
+//}
+//
+//int main()
+//{
+//	std::array<std::string_view, 5> arr {"apple", "banana", "walnut", "lemon", "peanut"};
+//
+//	auto nuts{ std::count_if(arr.begin(), arr.end(), containsNut) };
+//
+//	std::cout << "Counted " << nuts << " nut(s)\n";
+//
+//	return 0;
+//}
+
+// STD::FIND_IF - params: begin, end, function pointer "containsNut"
+//
+//#include <array>
+//#include <string_view>
+//#include <algorithm>
+//
+//// Our function will return true if the element matches
+//bool containsNut(std::string_view str)
+//{
+//	// std::string_view::find returns std::string_view::npos if it doesn't find
+//	// the substring. Otherwise it return the index where the substring occurs
+//	// in str.
+//	return (str.find("nut") != std::string_view::npos);
+//}
+//
+//int main()
+//{
+//	std::array<std::string_view, 4> arr{"apple", "banana", "lemon", "walnut"};
+//
+//	// Scan our array to see if any elements contain the "nut" substring
+//	auto found{ std::find_if(arr.begin(), arr.end(), containsNut) };
+//
+//	if (found == arr.end())  // works cause end gives one index AFTER the last
+//	{
+//		std::cout << "No nuts\n";
+//	}
+//	else
+//	{
+//		std::cout << "Found " << *found << '\n';
+//	}
+//}
+
+// STD::FIND - searches for first occurrence of a value in a container
+// 
+//#include <algorithm>
+//#include <array>
+//
+//int main()
+//{
+//	std::array arr { 13, 90, 99, 5, 40, 80};
+//
+//	std::cout << "Enter a value to search for and replace with: ";
+//	int search{};
+//	int replace{};
+//	std::cin >> search >> replace;
+//
+//	// std::find returns an iterator pointing to the found element (or the end of the container)
+//	// we'll store it in a variable, using type inference to deduce the type of
+//	// the iterator (since we don't care)
+//	auto found{ std::find(arr.begin(), arr.end(), search) };
+//
+//	//Algorithms that don't find what they were looking for return the end iterator.
+//	//We can acciess it by using the end() member function
+//	if (found == arr.end())
+//	{
+//		std::cout << "Could not find " << search << '\n';
+//	}
+//	else
+//	{
+//		// Override the found element.
+//		*found = replace;
+//	}
+//
+//	for (int i : arr)
+//	{
+//		std::cout << i << ' ';
+//	}
+//
+//	std::cout << '\n';
+//
+//	return 0;
+//}
+
+// ERASE() - iterator is revalidated below "it" = next element after erasure
+//#include <vector>
+//
+//int main()
+//{
+//	std::vector v{ 1, 2, 3, 4, 5, 6, 7 };
+//
+//	auto it{ v.begin() };
+//
+//	++it; // move to second element
+//	std::cout << *it << '\n';
+//
+//	it = v.erase(it); // erase the element currently being iterated over, set `it` to next element
+//
+//	std::cout << *it << '\n'; // now ok, prints 3
+//
+//
+//	return 0;
+//}
+
 //STD::VECTOR - can handle its own memory management
 //
 //#include <vector>
