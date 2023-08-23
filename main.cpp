@@ -5,6 +5,7 @@
 #include <array>
 #include <random>
 #include <cassert>
+#include <vector>
 
 enum CardRank
 {
@@ -43,6 +44,7 @@ struct Card
 
 using Deck = std::array<Card, 52>;
 using Index = Deck::size_type;
+using Hand = std::vector<Card>;
 
 void printCard(const Card& card)
 {
@@ -134,22 +136,133 @@ int getCardValue(Card& card)
 	}
 }
 
+
+//int playerTurn(int playerSum, Deck deck, Index deckIndex)
+//{
+//	std::string choice {};
+//	std::cout << "Would the player like to 'hit' or 'stand'?";
+//	std::cin >> choice;
+//	if (choice == "hit")
+//	{
+//		playerSum += getCardValue(deck[deckIndex]);
+//		std::cout << "Your score: " << playerSum << '\n';
+//		return playerSum;
+//	}
+//	else
+//		std::cout << "Your score: " << playerSum << '\n';
+//		return playerSum;
+//}
+//
+//int dealerTurn(int dealerSum, Deck deck, Index deckIndex)
+//{
+//	dealerSum += getCardValue(deck[deckIndex]);
+//	std::cout << "Dealer score: " << dealerSum << '\n';
+//	return dealerSum;
+//}
+
+bool playBlackjack(Deck& deck)
+{
+	int dealerSum{};
+	int playerSum{};
+	Index deckIndex{ 0 };
+
+	dealerSum = getCardValue(deck[deckIndex]);
+	++deckIndex;
+	dealerSum += getCardValue(deck[deckIndex]);
+	++deckIndex;
+
+	playerSum = getCardValue(deck[deckIndex]);
+	++deckIndex;
+	playerSum += getCardValue(deck[deckIndex]);
+	++deckIndex;
+
+	std::cout << "Dealer's score: " << dealerSum << '\n';
+	std::cout << "Your score: " << playerSum << '\n';
+
+	
+	//playerSum = playerTurn(playerSum, deck, deckIndex);
+	//++deckIndex;
+	//dealerSum = playerTurn(playerSum, deck, deckIndex);
+	//++deckIndex;
+
+
+	std::string choice {};
+	std::cout << "Would the player like to 'hit' or 'stand'?";
+	std::cin >> choice;
+	if (choice == "hit")
+	{
+		playerSum += getCardValue(deck[deckIndex]);
+		++deckIndex;
+		std::cout << "Your score: " << playerSum << '\n';
+	}
+
+	std::string choice {"hit"};
+	while (playerSum <= 21 && dealerSum <= 21)
+	{
+		while(choice == "hit")
+		{
+			std::cout << "Would the player like to 'hit' or 'stand'?";
+			std::cin >> choice;
+			if (choice == "hit")
+			{
+				playerSum += getCardValue(deck[deckIndex]);
+				++deckIndex;
+				std::cout << "Your score: " << playerSum << '\n';
+				if (playerSum > 21)
+					break;
+			}
+		}
+		if (dealerSum < 17)
+		{
+			dealerSum += getCardValue(deck[deckIndex]);
+			++deckIndex;
+			std::cout << "Dealer's score: " << dealerSum << '\n';
+		}
+		else
+			std::cout << "Dealer stands.";
+	}
+	if (playerSum > dealerSum && playerSum <= 21)
+		std::cout << "YOU WIN!";
+	else
+		std::cout << "YOU LOSE.";
+	
+
+
+	
+
+
+
+
+	//Hand dealerHand{};
+	//Hand playerHand{};
+	//Index deckIndex{0};
+
+	//std::cout << deck[deckIndex].rank << ' ' << deck[deckIndex].suit;
+
+	//while (dealerHand.size() < 2, ++deckIndex)
+	//{
+	//	dealerHand[dealerHand.size()].rank = deck[deckIndex].rank;
+	//	dealerHand[dealerHand.size()].suit = deck[deckIndex].suit;
+	//}
+	
+	//for (Card card : dealerHand)
+	//	std::cout << card.rank << card.suit << ' ';
+
+	return true;
+}
+
+
+
+
+
 int main()
 {
 	Deck myDeck{createDeck()};
 	printDeck(myDeck);
-	shuffleDeck(myDeck);
-	printDeck(myDeck);
-	std::cout << getCardValue(myDeck[0]);
-
-
-
-
-	//Card mine{};
-	//mine.rank = rank_jack;
-	//mine.suit = spades;
-
-	//printCard(mine);
+	Deck shuffledDeck = shuffleDeck(myDeck);
+	printDeck(shuffledDeck);
+	//std::cout << shuffledDeck.size();
+	playBlackjack(shuffledDeck);
 
 	return 0;
 }
