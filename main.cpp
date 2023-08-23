@@ -1,39 +1,213 @@
 #include <iostream>  // angled brackets are external directories
 
-
-//11.x.4
+//11.x.6
 //
-#include <string_view>
+#include <array>
+#include <random>
+#include <cassert>
 
-void printString(const char* string)
+enum CardRank
 {
-	while (static_cast<int>(*string) != 0)
+	rank_2,
+	rank_3,
+	rank_4,
+	rank_5,
+	rank_6,
+	rank_7,
+	rank_8,
+	rank_9,
+	rank_10,
+	rank_jack,
+	rank_queen,
+	rank_king,
+	rank_ace,
+
+	max_ranks
+};
+
+enum CardSuit
+{
+	clubs,
+	diamonds,
+	hearts,
+	spades,
+
+	max_suits
+};
+
+struct Card
+{
+	CardRank rank{};
+	CardSuit suit{};
+};
+
+using Deck = std::array<Card, 52>;
+using Index = Deck::size_type;
+
+void printCard(const Card& card)
+{
+	switch (card.rank)
 	{
-		std::cout << *string;
-		++string;
+	case CardRank::rank_2:		std::cout << "2"; break;
+	case CardRank::rank_3:		std::cout << "3"; break;
+	case CardRank::rank_4:		std::cout << "4"; break;
+	case CardRank::rank_5:		std::cout << "5"; break;
+	case CardRank::rank_6:		std::cout << "6"; break;
+	case CardRank::rank_7:		std::cout << "7"; break;
+	case CardRank::rank_8:		std::cout << "8"; break;
+	case CardRank::rank_9:		std::cout << "9"; break;
+	case CardRank::rank_10:		std::cout << "T"; break;
+	case CardRank::rank_jack:	std::cout << "J"; break;
+	case CardRank::rank_queen:	std::cout << "Q"; break;
+	case CardRank::rank_king:	std::cout << "K"; break;
+	case CardRank::rank_ace:	std::cout << "A"; break;
+	default: std::cout << '?'; break;
 	}
 
+	switch (card.suit)
+	{
+	case CardSuit::clubs:		std::cout << "C"; break;
+	case CardSuit::diamonds:	std::cout << "D"; break;
+	case CardSuit::hearts:		std::cout << "H"; break;
+	case CardSuit::spades:		std::cout << "S"; break;
+	default: std::cout << '?'; break;
+	}
+	std::cout << ' ';
+}
 
-	//std::cout << *string;
-	//++string;
-	//std::cout << *string;
+std::array<Card, 52> createDeck()
+{
+	std::array<Card, 52> deck{};
 
+	Index index{ 0 };
+	for (int suit{ 0 }; suit < static_cast<int>(CardSuit::max_suits); ++suit)
+	{
+		for (int rank{ 0 }; rank < static_cast<int>(CardRank::max_ranks); ++rank)
+		{
+			deck[index].suit = static_cast<CardSuit>(suit);
+			deck[index].rank = static_cast<CardRank>(rank);
+			++index;
+			//std::cout << static_cast<CardSuit>(suit) << static_cast<CardRank>(rank) << '\n';
+		}
 
+	}
+	return deck;
+}
 
-	//std::string deref {*string};
-	//for (int ch{}; ch == deref.size(); ++string)
-	//{
-	//	
-	//}
+void printDeck(const Deck& deck)
+{
+	for (Card card : deck)
+	{
+		printCard(card);
+	}
+	std::cout << '\n';
+}
+
+Deck shuffleDeck(Deck& deck)
+{
+	std::random_device rd;
+	std::mt19937 mt(rd());
+	std::shuffle(deck.begin(), deck.end(), mt);
+	return deck;
+}
+
+int getCardValue(Card& card)
+{
+	switch (card.rank)
+	{
+	case (0): return 2; break;
+	case (1): return 3; break;
+	case (2): return 4; break;
+	case (3): return 5; break;
+	case (4): return 6; break;
+	case (5): return 7; break;
+	case (6): return 8; break;
+	case (7): return 9; break;
+	case (8): return 10; break;
+	case (9): return 10; break;
+	case (10): return 10; break;
+	case (11): return 10; break;
+	case (12): return 11; break;
+	default:
+		assert(false && "Should never happen");
+		return 0;
+	}
 }
 
 int main()
 {
-	printString("Hello World!");
+	Deck myDeck{createDeck()};
+	printDeck(myDeck);
+	shuffleDeck(myDeck);
+	printDeck(myDeck);
+	std::cout << getCardValue(myDeck[0]);
+
+
+
+
+	//Card mine{};
+	//mine.rank = rank_jack;
+	//mine.suit = spades;
+
+	//printCard(mine);
 
 	return 0;
 }
 
+
+
+// 11.x.5.b
+//
+//int main()
+//{
+//	int x{ 5 };
+//	int y{ 7 };
+//
+//	int* ptr{ &x };
+//	std::cout << *ptr << '\n';
+//	*ptr = 6;
+//	std::cout << *ptr << '\n';
+//	ptr = &y;
+//	std::cout << *ptr << '\n';
+//
+//	return 0;
+//}
+
+//11.x.5.a
+//
+//int main()
+//{
+//	int array[]{ 0, 1, 2, 3 };
+//
+//	for (std::size_t count {0}; count < std::size(array); ++count)
+//	{
+//		std::cout << array[count] << ' ';
+//	}
+//
+//	std::cout << '\n';
+//
+//	return 0;
+//}
+
+//11.x.4
+//
+//#include <string_view>
+//
+//void printString(const char* string)
+//{
+//	while (static_cast<int>(*string) != 0)
+//	{
+//		std::cout << *string;
+//		++string;
+//	}
+//}
+//
+//int main()
+//{
+//	printString("Hello World!");
+//
+//	return 0;
+//}
 
 //11.x.3
 //
