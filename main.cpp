@@ -1,7 +1,210 @@
 #include <iostream>  // angled brackets are external directories
 
 
+// 12.8.3
+//
+#include <vector>
+#include <array>
 
+using Numbers = std::vector<int>;
+
+int getStart()
+{
+	std::cout << "Start where? ";
+	int start{};
+	std::cin >> start;
+	return start;
+}
+
+int getLength()
+{
+	std::cout << "How many? ";
+	int nums{};
+	std::cin >> nums;
+	return nums;
+}
+
+int main()
+{
+	int start{getStart()};
+	int nums{getLength()};
+	int multiple{2};
+
+	std::cout << "I generated " << nums << " square numbers. Do you know what "
+		"each number is after multiplying it by " << multiple << "?\n";
+
+	Numbers v(static_cast<Numbers::size_type>(nums));
+	//arr.resize(std::size_t(nums));
+
+	for (int& number : v) // need ampersand otherwise you GET A COPY!!
+	{
+		number = ((start * start) * multiple);
+		++start;
+	}
+
+	for (int num : v)
+		std::cout << num << ' ';
+
+	return 0;
+}
+
+// 12.7.2
+//
+//#include <algorithm>
+//#include <array>
+//#include <iostream>
+//#include <string_view>
+//
+//struct Season
+//{
+//	std::string_view name{};
+//	double averageTemperature{};
+//};
+//
+//int main()
+//{
+//	std::array<Season, 4> seasons{
+//		{ {"Spring", 285.0},
+//		{  "Summer", 296.0},
+//		{  "Fall",   288.0},
+//		{  "Winter", 263.0}  }
+//	};
+//
+//	std::sort(seasons.begin(), seasons.end(), 
+//		[](const auto& a, const auto& b)
+//		{
+//			return a.averageTemperature < b.averageTemperature;
+//		});
+//
+//	for (const auto& season : seasons)
+//	{
+//		std::cout << season.name << '\n';
+//	}
+//	
+//	return 0;
+//}
+
+// 12.7.1
+//
+//#include <array>
+//struct Student
+//{
+//    std::string name{};
+//    int score{};
+//};
+//
+//int main()
+//{
+//    std::array<Student, 8> arr{
+//  { { "Albert", 3 },
+//    { "Ben", 5 },
+//    { "Christine", 2 },
+//    { "Dan", 8 }, // Dan has the most points (8).
+//    { "Enchilada", 4 },
+//    { "Francis", 1 },
+//    { "Greg", 3 },
+//    { "Hagrid", 5 } }
+//    };
+//
+//    const auto best{
+//        std::max_element(arr.begin(), arr.end(), [](Student a, Student b)
+//            {
+//                return a.score < b.score;
+//})
+//    };
+//
+//    std::cout << best->name << " is the best student\n";
+//
+//	return 0;
+//}
+
+// LAMBDAS
+// 
+// Preferred when we need a trivial, one-off function to pass as an arguement to another function
+// [](std::string_view str) <- no capture clause, param is str
+// {
+//	 return (str.find("nut") != std::string_view::npos) };
+//
+// Storing a lambda inside a named variable - makes code more readable
+// auto isEven{
+//		[](int i)
+//		{
+//			return ((i % 2) == 0);
+//		}
+//	};
+// USING IT -> std::all_of(array.begin(), array.end(), isEven);
+//
+// CAPTURE CLAUSE - used to define variables that are needed within lambda 
+// Creates a copy of the variable but cannot modify it normally
+// 
+// Using mutable keyword you can modify it but it only modifies the copy - try to avoid
+// Capture by reference like this &ammo, &health to modify the variable normally
+// Using [=] will capture all variables used in lambda by value
+// Using [&] will capture all by reference
+// 
+// [userArea{ width * height }] creates a userArea variable specifically for 
+// the lambda using height and width variables from other scope
+
+
+// 12.4.3a
+//
+//void convert(int num)
+//{
+//
+//	if (num == 0)
+//		return;
+//
+//	convert(num / 2);
+//
+//	std::cout << num % 2;
+//}
+//
+//int main()
+//{
+//	convert(-15);
+//	return 0;
+//}
+
+// 12.4.2
+//
+//int sumOf(int num)
+//{
+//	if (num < 10)
+//		return num;
+//	return sumOf(static_cast<int>(num / 10)) + num % 10;
+//}
+//
+//int main()
+//{
+//	std::cout << sumOf(357);
+//	return 0;
+//}
+
+// 12.4.1
+//
+//int multitude(int num)
+//{
+//	if (num <= 0)
+//		return 1;
+//
+//	return multitude(num - 1) * num;
+//}
+//
+//int main()
+//{
+//	std::cout << multitude(4);
+//	return 0;
+//}
+
+// VECTOR CAPACITY AND STACK BEHAVIOR
+//
+// A vector's capacity cannot be changed using at() or initializing an index
+// such as vectorName[5] = 10
+//
+// Can use stack like functions to resize like push_back(), back(), and pop_back()
+// Resizing this way may reserve more than one slot per push back
+// 
+// Resizing is still expensive though so we can use reserve() to allocate capacity
 
 //11.x.6
 //
