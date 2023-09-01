@@ -1,66 +1,424 @@
 #include <iostream>  // angled brackets are external directories
 
 
-// 12.x.3
-#include <iostream>
-#include <iterator>
 
-// array is the array to search over.
-// target is the value we're trying to determine exists or not.
-// min is the index of the lower bounds of the array we're searching.
-// max is the index of the upper bounds of the array we're searching.
-// binarySearch() should return the index of the target element if the target is found, -1 otherwise
-int binarySearch(const int* array, int target, int min, int max)
-{
-    while (true)
-    {
-        int middle{ (min + max) / 2 };
-        if (array[middle] == target)
-        {
-            return middle;
-        }
-        else if (middle == min)
-        {
-            return -1;
-        }
-        else if (array[middle] > target)
-        {
-            max = middle;
-            std::cout << max << " max is middle.";
-        }
-        else if (array[middle] < target)
-        {
-            min = middle;
-            std::cout << min << " min is middle.";
-        }
-    }
-}
 
-int main()
-{
-    constexpr int array[]{ 3, 6, 8, 12, 14, 17, 20, 21, 26, 32, 36, 37, 42, 44, 48 };
 
-    // We're going to test a bunch of values to see if they produce the expected results
-    constexpr int numTestValues{ 9 };
-    // Here are the test values
-    constexpr int testValues[numTestValues]{ 0, 3, 12, 13, 22, 26, 43, 44, 49 };
-    // And here are the expected results for each value
-    int expectedValues[numTestValues]{ -1, 0, 3, -1, -1, 8, -1, 13, -1 };
 
-    // Loop through all of the test values
-    for (int count{ 0 }; count < numTestValues; ++count)
-    {
-        // See if our test value is in the array
-        int index{ binarySearch(array, testValues[count], 0, static_cast<int>(std::size(array)) - 1) };
-        // If it matches our expected value, then great!
-        if (index == expectedValues[count])
-            std::cout << "test value " << testValues[count] << " passed!\n";
-        else // otherwise, our binarySearch() function must be broken
-            std::cout << "test value " << testValues[count] << " failed.  There's something wrong with your code!\n";
-    }
+// 13.7.1
+//
+//#include <iostream>
+//#include <string>
+//#include <string_view>
+//
+//class Ball
+//{
+//private:
+//	std::string m_color{ "black" };
+//	double m_radius{10.0};
+//
+//public:
+//	// Default constructor with no parameters
+//	Ball() = default;
+//
+//	// Constructor with only color parameter (radius will use default value)
+//	Ball(std::string_view color)
+//		: m_color {color}
+//	{
+//	}
+//
+//	// Constructor with only radius parameter (color will use default value)
+//	Ball(double radius)
+//		: m_radius {radius}
+//	{
+//	}
+//
+//	// Constructor with both color and radius parameters
+//	Ball(std::string_view color, double radius)
+//		: m_color{ color }, m_radius{ radius }
+//	{
+//	}
+//
+//	void print()
+//	{
+//		std::cout << "color: " << m_color << ", radius: " << m_radius << '\n';
+//	}
+//};
+//
+//int main()
+//{
+//	Ball def;
+//	def.print();
+//
+//	Ball blue{ "blue" };
+//	blue.print();
+//
+//	Ball twenty{ 20.0 };
+//	twenty.print();
+//
+//	Ball blueTwenty{ "blue", 20.0 };
+//	blueTwenty.print();
+//
+//	return 0;
+//}
 
-    return 0;
-}
+// 13.6.1
+//
+//#include <cstdint>
+//
+//class RGBA {
+//	using Color = std::uint8_t;
+//
+//	Color m_red{};
+//	Color m_green{};
+//	Color m_blue{};
+//	Color m_alpha{};
+//
+//public:
+//
+//	RGBA(Color red = 0, Color blue = 0, Color green = 0, Color alpha = 255)
+//		: m_red{ red }, m_blue{ blue }, m_green{ green }, m_alpha{ alpha }{}
+//	
+//	void print()
+//	{
+//		std::cout << static_cast<int>(m_red) << ", " 
+//			<< static_cast<int>(m_green) << ", " 
+//			<< static_cast<int>(m_blue) << ", " 
+//			<< static_cast<int>(m_alpha) << '\n';
+//	}
+//
+//};
+//
+//int main()
+//{
+//	RGBA teal{ 0, 127, 127 };
+//	teal.print();
+//
+//	return 0;
+//}
+
+// 13.5.1
+//
+//class Ball
+//{
+//	std::string m_color{};
+//	double m_radius{};
+//
+//public:
+//
+//	Ball(std::string color = "black", double radius = 10.0)
+//	{
+//		m_color = color;
+//		m_radius = radius;
+//	}
+//
+//	Ball(double radius, std::string color = "black")
+//	{
+//		m_radius = radius;
+//		m_color = color;
+//	}
+//
+//	void print()
+//	{
+//		std::cout << "color: " << m_color << ", radius: " << m_radius << '\n';
+//	}
+//};
+//
+//int main()
+//{
+//	Ball def{};
+//	def.print();
+//
+//	Ball blue{ "blue" };
+//	blue.print();
+//
+//	Ball twenty{ 20.0 };
+//	twenty.print();
+//
+//	Ball blueTwenty{ "blue", 20.0 };
+//	blueTwenty.print();
+//
+//	return 0;
+//}
+
+// 13.3.3
+//
+//#include <array>
+//#include <cassert>
+//
+//class Stack
+//{
+//	using Array = std::array<int, 10>;
+//	using Index = Array::size_type;
+//
+//	Array m_stack{};
+//	Index m_index{0};
+//
+//public:
+//	
+//	void reset()
+//	{
+//		m_index = 0;
+//	}
+//
+//	bool push(int num)
+//	{
+//		if (m_index < 9)
+//		{
+//			m_stack[m_index] = num;
+//			++m_index;
+//			return true;
+//		}
+//		else
+//			return false;
+//	}
+//
+//	int pop()
+//	{
+//		assert(m_index > 0 && "No more numbers.");
+//
+//		return m_stack[--m_index];
+//	}
+//
+//	void print()
+//	{
+//		std::cout << "( ";
+//		for (Index num{}; num < m_index; ++num)
+//			std::cout << m_stack[num] << ' ';
+//
+//		std::cout << ")\n";
+//	}
+//
+//
+//};
+//
+//int main()
+//{
+//	Stack stack;
+//	stack.print();
+//
+//	stack.push(5);
+//	stack.push(3);
+//	stack.push(8);
+//	stack.print();
+//
+//	stack.pop();
+//	stack.print();
+//
+//	stack.pop();
+//	stack.pop();
+//
+//	stack.print();
+//
+//	return 0;
+//}
+
+// 13.3.2
+//
+//class Point3d
+//{
+//    int m_x{};
+//    int m_y{};
+//    int m_z{};
+//
+//public:
+//    void setValues(int num1, int num2, int num3)
+//    {
+//        m_x = num1;
+//        m_y = num2;
+//        m_z = num3;
+//    }
+//
+//    void print()
+//    {
+//        std::cout << '<' << m_x << ", " << m_y << ", " << m_z << ">\n";
+//    }
+//
+//    bool isEqual(Point3d& p2)
+//    {
+//        return (m_x == p2.m_x && m_y == p2.m_y && m_z == p2.m_z);
+//    }
+//
+//};
+//
+//int main()
+//{
+//    Point3d point1;
+//    point1.setValues(1, 2, 3);
+//
+//    Point3d point2;
+//    point2.setValues(1, 2, 3);
+//
+//    if (point1.isEqual(point2))
+//    {
+//        std::cout << "point1 and point2 are equal\n";
+//    }
+//    else
+//    {
+//        std::cout << "point1 and point2 are not equal\n";
+//    }
+//
+//    Point3d point3;
+//    point3.setValues(3, 4, 5);
+//
+//    if (point1.isEqual(point3))
+//    {
+//        std::cout << "point1 and point3 are equal\n";
+//    }
+//    else
+//    {
+//        std::cout << "point1 and point3 are not equal\n";
+//    }
+//
+//    return 0;
+//}
+
+// 13.2.1
+//
+//class IntPair
+//{
+//public:
+//	int a{};
+//	int b{};
+//
+//	void set(int num1, int num2)
+//	{
+//		a = num1;
+//		b = num2;
+//	}
+//
+//	void print()
+//	{
+//		std::cout << "Pair(" << a << ", " << b << ")\n";
+//	}
+//};
+//
+//int main()
+//{
+//	IntPair p1;
+//	p1.set(1, 1); // set p1 values to (1, 1)
+//
+//	IntPair p2{ 2, 2 }; // initialize p2 values to (2, 2)
+//
+//	p1.print();
+//	p2.print();
+//
+//	return 0;
+//}
+
+// 12.x.3b
+//
+//#include <iostream>
+//#include <iterator>
+//
+//// array is the array to search over.
+//// target is the value we're trying to determine exists or not.
+//// min is the index of the lower bounds of the array we're searching.
+//// max is the index of the upper bounds of the array we're searching.
+//// binarySearch() should return the index of the target element if the target is found, -1 otherwise
+//int binarySearch(const int* array, int target, int min, int max)
+//{
+//    int middle{ (min + max) / 2 };
+//    
+//    if (array[middle] == target)
+//        return middle;
+//
+//    if (middle == min)
+//        return -1;
+//    
+//    if (array[middle] > target)
+//        return binarySearch(array, target, min, middle);
+//
+//    else
+//        return binarySearch(array, target, middle, max);
+//}
+//
+//int main()
+//{
+//    constexpr int array[]{ 3, 6, 8, 12, 14, 17, 20, 21, 26, 32, 36, 37, 42, 44, 48 };
+//
+//    // We're going to test a bunch of values to see if they produce the expected results
+//    constexpr int numTestValues{ 9 };
+//    // Here are the test values
+//    constexpr int testValues[numTestValues]{ 0, 3, 12, 13, 22, 26, 43, 44, 49 };
+//    // And here are the expected results for each value
+//    int expectedValues[numTestValues]{ -1, 0, 3, -1, -1, 8, -1, 13, -1 };
+//
+//    // Loop through all of the test values
+//    for (int count{ 0 }; count < numTestValues; ++count)
+//    {
+//        // See if our test value is in the array
+//        int index{ binarySearch(array, testValues[count], 0, static_cast<int>(std::size(array)) - 1) };
+//        // If it matches our expected value, then great!
+//        if (index == expectedValues[count])
+//            std::cout << "test value " << testValues[count] << " passed!\n";
+//        else // otherwise, our binarySearch() function must be broken
+//            std::cout << "test value " << testValues[count] << " failed.  There's something wrong with your code!\n";
+//    }
+//
+//    return 0;
+//}
+
+// 12.x.3a
+//#include <iostream>
+//#include <iterator>
+//
+//// array is the array to search over.
+//// target is the value we're trying to determine exists or not.
+//// min is the index of the lower bounds of the array we're searching.
+//// max is the index of the upper bounds of the array we're searching.
+//// binarySearch() should return the index of the target element if the target is found, -1 otherwise
+//int binarySearch(const int* array, int target, int min, int max)
+//{
+//    while (true)
+//    {
+//        int middle{ (min + max) / 2 };
+//        if (array[middle] == target)
+//        {
+//            return middle;
+//        }
+//        else if (middle == min)
+//        {
+//            return -1;
+//        }
+//        else if (array[middle] > target)
+//        {
+//            max = middle;
+//            std::cout << max << " max is middle.";
+//        }
+//        else if (array[middle] < target)
+//        {
+//            min = middle;
+//            std::cout << min << " min is middle.";
+//        }
+//    }
+//}
+//
+//int main()
+//{
+//    constexpr int array[]{ 3, 6, 8, 12, 14, 17, 20, 21, 26, 32, 36, 37, 42, 44, 48 };
+//
+//    // We're going to test a bunch of values to see if they produce the expected results
+//    constexpr int numTestValues{ 9 };
+//    // Here are the test values
+//    constexpr int testValues[numTestValues]{ 0, 3, 12, 13, 22, 26, 43, 44, 49 };
+//    // And here are the expected results for each value
+//    int expectedValues[numTestValues]{ -1, 0, 3, -1, -1, 8, -1, 13, -1 };
+//
+//    // Loop through all of the test values
+//    for (int count{ 0 }; count < numTestValues; ++count)
+//    {
+//        // See if our test value is in the array
+//        int index{ binarySearch(array, testValues[count], 0, static_cast<int>(std::size(array)) - 1) };
+//        // If it matches our expected value, then great!
+//        if (index == expectedValues[count])
+//            std::cout << "test value " << testValues[count] << " passed!\n";
+//        else // otherwise, our binarySearch() function must be broken
+//            std::cout << "test value " << testValues[count] << " failed.  There's something wrong with your code!\n";
+//    }
+//
+//    return 0;
+//}
 
 // 12.x.1
 //
