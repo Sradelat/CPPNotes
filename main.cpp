@@ -1,9 +1,294 @@
 #include <iostream>  // angled brackets are external directories
 
 
+// 13.x.3
+//
+#include <string>
+#include <string_view>
+#include "Random.h"
+
+class Monster
+{
+public:
+
+	enum Type
+	{
+		dragon,
+		goblin,
+		ogre,
+		orc,
+		skeleton,
+		troll,
+		vampire,
+		zombie,
+		max_monster_types,
+	};
+
+private:
+
+	Type m_type{};
+	std::string m_name{};
+	std::string m_roar{};
+	int m_hp{};
+
+public:
+
+	Monster(Type type, std::string_view name, std::string_view roar, int hp)
+		: m_type{ type }, m_name{ name }, m_roar{ roar }, m_hp{hp}
+	{}
+
+	std::string getTypeString(Type type) const
+	{
+		switch (type)
+		{
+		case (dragon): return "dragon";
+		case (goblin): return "goblin";
+		case (ogre): return "ogre";
+		case (orc): return "orc";
+		case (skeleton): return "skeleton";
+		case (troll): return "troll";
+		case (vampire): return "vampire";
+		case (zombie): return "zombie";
+		default: return "???";
+		}
+	}
+
+	void print() const
+	{
+		std::cout << m_name << " the " << getTypeString(m_type) << " has "
+			<< m_hp << " hit points and says " << m_roar << '\n';
+	}
+
+};
+
+namespace MonsterGenerator
+{
+	Monster generate()
+	{
+		Monster::Type type{ Random::get(static_cast<Monster::Type>(0), Monster::Type::max_monster_types) };
+
+		return Monster{ 
+			type, 
+			"Bones", 
+			"*rattle*", 
+			4 };
+	}
+}
 
 
+int main()
+{
+	//Monster skeleton{ Monster::skeleton, "Bones", "*rattle*", 4 };
+	//skeleton.print();
+	Monster m{ MonsterGenerator::generate() };
+	m.print();
+	return 0;
+}
 
+// 13.x.2
+//
+//#include <iostream>
+//
+//class HelloWorld
+//{
+//private:
+//	char* m_data{};
+//
+//public:
+//	HelloWorld()
+//	{
+//		m_data = new char[14];
+//		const char* init{ "Hello, World!" };
+//		for (int i = 0; i < 14; ++i)
+//			m_data[i] = init[i];
+//	}
+//
+//	~HelloWorld()
+//	{
+//		delete[] m_data;
+//	}
+//
+//	void print() const
+//	{
+//		std::cout << m_data << '\n';
+//	}
+//
+//};
+//
+//int main()
+//{
+//	HelloWorld hello{};
+//	hello.print();
+//
+//	return 0;
+//}
+
+// 13.x.1c
+//
+//#include <iostream>
+//#include <cmath>
+//
+//class Point2d
+//{
+//    double m_x{};
+//    double m_y{};
+//
+//public:
+//
+//    Point2d(double x = 0.0, double y = 0.0)
+//        : m_x{ x }, m_y{ y }
+//    {}
+//
+//    void print() const
+//    {
+//        std::cout << "Point2d(" << m_x << ", " << m_y << ")\n";
+//    }
+//
+//    friend double distanceFrom(const Point2d& p1, const Point2d& p2);
+//};
+//
+//double distanceFrom(const Point2d& p1, const Point2d& p2)
+//{
+//    return std::sqrt((p1.m_x - p2.m_x) * (p1.m_x - p2.m_x) + (p1.m_y - p2.m_y) * (p1.m_y - p2.m_y));
+//}
+//
+//int main()
+//{
+//    Point2d first{};
+//    Point2d second{ 3.0, 4.0 };
+//    first.print();
+//    second.print();
+//    std::cout << "Distance between two points: " << distanceFrom(first, second) << '\n';
+//
+//    return 0;
+//}
+
+// 13.x.1a-b
+//#include <iostream>
+//#include <cmath>
+//
+//class Point2d
+//{
+//    double m_x{};
+//    double m_y{};
+//
+//public:
+//
+//    Point2d(double x=0.0, double y=0.0)
+//        : m_x{x}, m_y{y}
+//    {}
+//
+//    double distanceTo(const Point2d& p) const
+//    {
+//        return std::sqrt((m_x - p.m_x) * (m_x - p.m_x) + (m_y - p.m_y) * (m_y - p.m_y));
+//    }
+//
+//    void print() const
+//    {
+//        std::cout << "Point2d(" << m_x << ", " << m_y << ")\n";
+//    }
+//};
+//
+//int main()
+//{
+//    Point2d first{};
+//    Point2d second{ 3.0, 4.0 };
+//    first.print();
+//    second.print();
+//    std::cout << "Distance between two points: " << first.distanceTo(second) << '\n';
+//
+//    return 0;
+//}
+
+// 13.15.1c
+//
+//#include <iostream>
+//#include "Vector3d.h"
+//#include "Point3d.h"
+//
+//int main()
+//{
+//	Point3d p{ 1.0, 2.0, 3.0 };
+//	Vector3d v{ 2.0, 2.0, -3.0 };
+//
+//	p.print();
+//	p.moveByVector(v);
+//	p.print();
+//
+//	return 0;
+//}
+
+// 13.15.1
+//
+//#include <iostream>
+//
+//class Vector3d;
+//
+//class Point3d
+//{
+//private:
+//	double m_x{};
+//	double m_y{};
+//	double m_z{};
+//
+//public:
+//	Point3d(double x = 0.0, double y = 0.0, double z = 0.0)
+//		: m_x{ x }, m_y{ y }, m_z{ z }
+//	{
+//
+//	}
+//
+//	void print() const
+//	{
+//		std::cout << "Point(" << m_x << " , " << m_y << " , " << m_z << ")\n";
+//	}
+//
+//	void moveByVector(const Vector3d& v);
+//};
+//
+//class Vector3d
+//{
+//private:
+//	double m_x{};
+//	double m_y{};
+//	double m_z{};
+//
+//public:
+//	Vector3d(double x = 0.0, double y = 0.0, double z = 0.0)
+//		: m_x{ x }, m_y{ y }, m_z{ z }
+//	{
+//
+//	}
+//
+//	void print() const
+//	{
+//		std::cout << "Vector(" << m_x << " , " << m_y << " , " << m_z << ")\n";
+//	}
+//
+//	friend void Point3d::moveByVector(const Vector3d& v);
+//};
+//
+//
+//
+//void Point3d::moveByVector(const Vector3d& v)
+//{
+//	// implement this function as a friend of class Vector3d
+//	m_x += v.m_x;
+//	m_y += v.m_y;
+//	m_z += v.m_z;
+//}
+//
+//int main()
+//{
+//	Point3d p{ 1.0, 2.0, 3.0 };
+//	Vector3d v{ 2.0, 2.0, -3.0 };
+//
+//	p.print();
+//	p.moveByVector(v);
+//	p.print();
+//
+//	return 0;
+//}
 
 // 13.7.1
 //
