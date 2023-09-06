@@ -1,89 +1,446 @@
 #include <iostream>  // angled brackets are external directories
 
 
-// 13.x.3
-//
-#include <string>
-#include <string_view>
-#include "Random.h"
+#include <algorithm> // std::shuffle
+#include <array>
+#include <cassert>
+#include <ctime> // std::time
+#include <iostream>
+#include <random> // std::mt19937
 
-class Monster
+class Card
 {
 public:
 
-	enum Type
-	{
-		dragon,
-		goblin,
-		ogre,
-		orc,
-		skeleton,
-		troll,
-		vampire,
-		zombie,
-		max_monster_types,
-	};
+    enum Suit
+    {
+        club,
+        diamond,
+        heart,
+        spade,
+
+        max_suits
+    };
+
+    enum Rank
+    {
+        rank_2,
+        rank_3,
+        rank_4,
+        rank_5,
+        rank_6,
+        rank_7,
+        rank_8,
+        rank_9,
+        rank_10,
+        rank_jack,
+        rank_queen,
+        rank_king,
+        rank_ace,
+
+        max_ranks
+    };
 
 private:
 
-	Type m_type{};
-	std::string m_name{};
-	std::string m_roar{};
-	int m_hp{};
+    Rank m_rank{};
+    Suit m_suit{};
+ 
+ public:
 
-public:
+     Card() = default;
 
-	Monster(Type type, std::string_view name, std::string_view roar, int hp)
-		: m_type{ type }, m_name{ name }, m_roar{ roar }, m_hp{hp}
-	{}
+     Card(Rank rank, Suit suit)
+         : m_rank{ rank }, m_suit{ suit }{}
 
-	std::string getTypeString(Type type) const
-	{
-		switch (type)
-		{
-		case (dragon): return "dragon";
-		case (goblin): return "goblin";
-		case (ogre): return "ogre";
-		case (orc): return "orc";
-		case (skeleton): return "skeleton";
-		case (troll): return "troll";
-		case (vampire): return "vampire";
-		case (zombie): return "zombie";
-		default: return "???";
-		}
-	}
+     void print() const
+     {
+        switch (m_rank)
+        {
+        case Rank::rank_2:      std::cout << '2';   break;
+        case Rank::rank_3:      std::cout << '3';   break;
+        case Rank::rank_4:      std::cout << '4';   break;
+        case Rank::rank_5:      std::cout << '5';   break;
+        case Rank::rank_6:      std::cout << '6';   break;
+        case Rank::rank_7:      std::cout << '7';   break;
+        case Rank::rank_8:      std::cout << '8';   break;
+        case Rank::rank_9:      std::cout << '9';   break;
+        case Rank::rank_10:     std::cout << 'T';   break;
+        case Rank::rank_jack:   std::cout << 'J';   break;
+        case Rank::rank_queen:  std::cout << 'Q';   break;
+        case Rank::rank_king:   std::cout << 'K';   break;
+        case Rank::rank_ace:    std::cout << 'A';   break;
+        default:
+            std::cout << '?';
+            break;
+        }
 
-	void print() const
-	{
-		std::cout << m_name << " the " << getTypeString(m_type) << " has "
-			<< m_hp << " hit points and says " << m_roar << '\n';
-	}
-
-};
-
-namespace MonsterGenerator
-{
-	Monster generate()
-	{
-		Monster::Type type{ Random::get(static_cast<Monster::Type>(0), Monster::Type::max_monster_types) };
-
-		return Monster{ 
-			type, 
-			"Bones", 
-			"*rattle*", 
-			4 };
-	}
+        switch (m_suit)
+        {
+        case Suit::club:       std::cout << 'C';   break;
+        case Suit::diamond:    std::cout << 'D';   break;
+        case Suit::heart:      std::cout << 'H';   break;
+        case Suit::spade:      std::cout << 'S';   break;
+        default:
+            std::cout << '?';
+            break;
+        }
 }
 
+     int value() const
+     {
+        switch (m_rank)
+        {
+        case Rank::rank_2:        return 2;
+        case Rank::rank_3:        return 3;
+        case Rank::rank_4:        return 4;
+        case Rank::rank_5:        return 5;
+        case Rank::rank_6:        return 6;
+        case Rank::rank_7:        return 7;
+        case Rank::rank_8:        return 8;
+        case Rank::rank_9:        return 9;
+        case Rank::rank_10:       return 10;
+        case Rank::rank_jack:     return 10;
+        case Rank::rank_queen:    return 10;
+        case Rank::rank_king:     return 10;
+        case Rank::rank_ace:      return 11;
+        default:
+            assert(false && "should never happen");
+            return 0;
+        }
+     }
+};
 
 int main()
 {
-	//Monster skeleton{ Monster::skeleton, "Bones", "*rattle*", 4 };
-	//skeleton.print();
-	Monster m{ MonsterGenerator::generate() };
-	m.print();
-	return 0;
+    const Card cardQueenHearts{ Card::rank_queen, Card::heart };
+    cardQueenHearts.print();
+    std::cout << " has the value " << cardQueenHearts.value() << '\n';
+
+    return 0;
 }
+
+//
+//struct Player
+//{
+//    int score{};
+//};
+//
+//using Deck = std::array<Card, 52>;
+//using Index = Deck::size_type;
+//
+//// Maximum score before losing.
+//constexpr int g_maximumScore{ 21 };
+//
+//// Minimum score that the dealer has to have.
+//constexpr int g_minimumDealerScore{ 17 };
+//
+//void printCard(const Card& card)
+//{
+//    switch (card.rank)
+//    {
+//    case CardRank::rank_2:      std::cout << '2';   break;
+//    case CardRank::rank_3:      std::cout << '3';   break;
+//    case CardRank::rank_4:      std::cout << '4';   break;
+//    case CardRank::rank_5:      std::cout << '5';   break;
+//    case CardRank::rank_6:      std::cout << '6';   break;
+//    case CardRank::rank_7:      std::cout << '7';   break;
+//    case CardRank::rank_8:      std::cout << '8';   break;
+//    case CardRank::rank_9:      std::cout << '9';   break;
+//    case CardRank::rank_10:     std::cout << 'T';   break;
+//    case CardRank::rank_jack:   std::cout << 'J';   break;
+//    case CardRank::rank_queen:  std::cout << 'Q';   break;
+//    case CardRank::rank_king:   std::cout << 'K';   break;
+//    case CardRank::rank_ace:    std::cout << 'A';   break;
+//    default:
+//        std::cout << '?';
+//        break;
+//    }
+//
+//    switch (card.suit)
+//    {
+//    case CardSuit::club:       std::cout << 'C';   break;
+//    case CardSuit::diamond:    std::cout << 'D';   break;
+//    case CardSuit::heart:      std::cout << 'H';   break;
+//    case CardSuit::spade:      std::cout << 'S';   break;
+//    default:
+//        std::cout << '?';
+//        break;
+//    }
+//}
+//
+//int getCardValue(const Card& card)
+//{
+//    switch (card.rank)
+//    {
+//    case CardRank::rank_2:        return 2;
+//    case CardRank::rank_3:        return 3;
+//    case CardRank::rank_4:        return 4;
+//    case CardRank::rank_5:        return 5;
+//    case CardRank::rank_6:        return 6;
+//    case CardRank::rank_7:        return 7;
+//    case CardRank::rank_8:        return 8;
+//    case CardRank::rank_9:        return 9;
+//    case CardRank::rank_10:       return 10;
+//    case CardRank::rank_jack:     return 10;
+//    case CardRank::rank_queen:    return 10;
+//    case CardRank::rank_king:     return 10;
+//    case CardRank::rank_ace:      return 11;
+//    default:
+//        assert(false && "should never happen");
+//        return 0;
+//    }
+//}
+//
+//void printDeck(const Deck& deck)
+//{
+//    for (const auto& card : deck)
+//    {
+//        printCard(card);
+//        std::cout << ' ';
+//    }
+//
+//    std::cout << '\n';
+//}
+//
+//Deck createDeck()
+//{
+//    Deck deck{};
+//
+//    // We could initialize each card individually, but that would be a pain.  Let's use a loop.
+//
+//    Index index{ 0 };
+//
+//    for (int suit{ 0 }; suit < static_cast<int>(CardSuit::max_suits); ++suit)
+//    {
+//        for (int rank{ 0 }; rank < static_cast<int>(CardRank::max_ranks); ++rank)
+//        {
+//            deck[index].suit = static_cast<CardSuit>(suit);
+//            deck[index].rank = static_cast<CardRank>(rank);
+//            ++index;
+//        }
+//    }
+//
+//    return deck;
+//}
+//
+//void shuffleDeck(Deck& deck)
+//{
+//    static std::mt19937 mt{ static_cast<std::mt19937::result_type>(std::time(nullptr)) };
+//
+//    std::shuffle(deck.begin(), deck.end(), mt);
+//}
+//
+//bool playerWantsHit()
+//{
+//    while (true)
+//    {
+//        std::cout << "(h) to hit, or (s) to stand: ";
+//
+//        char ch{};
+//        std::cin >> ch;
+//
+//        switch (ch)
+//        {
+//        case 'h':
+//            return true;
+//        case 's':
+//            return false;
+//        }
+//    }
+//}
+//
+//// Returns true if the player went bust. False otherwise.
+//bool playerTurn(const Deck& deck, Index& nextCardIndex, Player& player)
+//{
+//    while (true)
+//    {
+//        if (player.score > g_maximumScore)
+//        {
+//            // This can happen even before the player had a choice if they drew 2
+//            // aces.
+//            std::cout << "You busted!\n";
+//            return true;
+//        }
+//        else
+//        {
+//            if (playerWantsHit())
+//            {
+//                int cardValue{ getCardValue(deck.at(nextCardIndex++)) };
+//                player.score += cardValue;
+//                std::cout << "You were dealt a " << cardValue << " and now have " << player.score << '\n';
+//            }
+//            else
+//            {
+//                // The player didn't go bust.
+//                return false;
+//            }
+//        }
+//    }
+//}
+//
+//// Returns true if the dealer went bust. False otherwise.
+//bool dealerTurn(const Deck& deck, Index& nextCardIndex, Player& dealer)
+//{
+//    // Draw cards until we reach the minimum value.
+//    while (dealer.score < g_minimumDealerScore)
+//    {
+//        int cardValue{ getCardValue(deck.at(nextCardIndex++)) };
+//        dealer.score += cardValue;
+//        std::cout << "The dealer turned up a " << cardValue << " and now has " << dealer.score << '\n';
+//
+//    }
+//
+//    // If the dealer's score is too high, they went bust.
+//    if (dealer.score > g_maximumScore)
+//    {
+//        std::cout << "The dealer busted!\n";
+//        return true;
+//    }
+//
+//    return false;
+//}
+//
+//bool playBlackjack(const Deck& deck)
+//{
+//    // Index of the card that will be drawn next. This cannot overrun
+//    // the array, because a player will lose before all cards are used up.
+//    Index nextCardIndex{ 0 };
+//
+//    // Create the dealer and give them 1 card.
+//    Player dealer{ getCardValue(deck.at(nextCardIndex++)) };
+//
+//    // The dealer's card is face up, the player can see it.
+//    std::cout << "The dealer is showing: " << dealer.score << '\n';
+//
+//    // Create the player and give them 2 cards.
+//    Player player{ getCardValue(deck.at(nextCardIndex)) + getCardValue(deck.at(nextCardIndex + 1)) };
+//    nextCardIndex += 2;
+//
+//    std::cout << "You have: " << player.score << '\n';
+//
+//    if (playerTurn(deck, nextCardIndex, player))
+//    {
+//        // The player went bust.
+//        return false;
+//    }
+//
+//    if (dealerTurn(deck, nextCardIndex, dealer))
+//    {
+//        // The dealer went bust, the player wins.
+//        return true;
+//    }
+//
+//    return (player.score > dealer.score);
+//}
+//
+//int main()
+//{
+//    auto deck{ createDeck() };
+//
+//    shuffleDeck(deck);
+//
+//    if (playBlackjack(deck))
+//    {
+//        std::cout << "You win!\n";
+//    }
+//    else
+//    {
+//        std::cout << "You lose!\n";
+//    }
+//
+//    return 0;
+//}
+
+
+
+// 13.x.3
+//
+//#include <string>
+//#include <string_view>
+//#include <array>
+//#include "Random.h"
+//
+//class Monster
+//{
+//public:
+//
+//	enum Type
+//	{
+//		dragon,
+//		goblin,
+//		ogre,
+//		orc,
+//		skeleton,
+//		troll,
+//		vampire,
+//		zombie,
+//		max_monster_types,
+//	};
+//
+//private:
+//
+//	Type m_type{};
+//	std::string m_name{};
+//	std::string m_roar{};
+//	int m_hp{};
+//
+//public:
+//
+//	Monster(Type type, std::string_view name, std::string_view roar, int hp)
+//		: m_type{ type }, m_name{ name }, m_roar{ roar }, m_hp{hp}
+//	{}
+//
+//	std::string getTypeString(Type type) const
+//	{
+//		switch (type)
+//		{
+//		case (dragon): return "dragon";
+//		case (goblin): return "goblin";
+//		case (ogre): return "ogre";
+//		case (orc): return "orc";
+//		case (skeleton): return "skeleton";
+//		case (troll): return "troll";
+//		case (vampire): return "vampire";
+//		case (zombie): return "zombie";
+//		default: return "???";
+//		}
+//	}
+//
+//	void print() const
+//	{
+//		std::cout << m_name << " the " << getTypeString(m_type) << " has "
+//			<< m_hp << " hit points and says " << m_roar << '\n';
+//	}
+//
+//};
+//
+//namespace MonsterGenerator
+//{
+//	Monster generate()
+//	{
+//		int maxIndex{Monster::Type::max_monster_types - 1};
+//		Monster::Type type{ static_cast<Monster::Type>(Random::get(0, maxIndex))};
+//		int randHp{ Random::get(1, 100) };
+//		static constexpr std::array s_names{ "Jim", "Rick", "Dick", "Bob", "John", "Shwan" };
+//		static constexpr std::array s_roars{ "*rattle*", "*squak*", "*squeek*", "*blubble*", "*squish*", "*meow*" };
+//
+//		return Monster{ 
+//			type, 
+//			s_names[Random::get<std::size_t>(0, size(s_names) - 1)],
+//			s_roars[Random::get<std::size_t>(0, size(s_roars) - 1)],
+//			randHp };
+//	}
+//}
+//
+//int main()
+//{
+//	//Monster skeleton{ Monster::skeleton, "Bones", "*rattle*", 4 };
+//	//skeleton.print();
+//	Monster m{ MonsterGenerator::generate() };
+//	m.print();
+//	return 0;
+//}
 
 // 13.x.2
 //
